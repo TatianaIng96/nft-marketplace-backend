@@ -17,105 +17,121 @@ model Nft {
   price        Int
   size         Int
   property     String
-  end_auction  DateTime?
-  on_sale      Boolean
-  NftOwner     NftOwner[]
-  Transaction  Transaction[]
-  Bid          Bid[]
-  Like         Like[]
+  onSale       Boolean
+  royalty      Int
+  nftOwner     NftOwner[]
+  image        String?
+  transaction  Transaction[]
+  like         Like[]
   user         User          @relation(fields: [userId], references: [id])
   userId       String
   category     Category      @relation(fields: [categoryId], references: [id])
   categoryId   Int
   collection   Collection    @relation(fields: [collectionId], references: [id])
   collectionId Int
+  createdAt    DateTime      @default(now())
+  updateAt     DateTime      @updatedAt
+  auction      Auction[]
 }
 
 model User {
-  id         String     @id @default(cuid())
-  first_name String
-  last_name  String
-  email      String
-  password   String
-  bio        String?
-  role       Role       @default(USER)
-  gender     String
-  currency   String
-  phone      String
-  location   String
-  address    String
-  NftOwner   NftOwner[]
-  Buyer      Buyer[]
-  Seller     Seller[]
-  Bid        Bid[]
-  Like       Like[]
-  Nft        Nft[]
+  id        String     @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  password  String
+  bio       String?
+  role      Role       @default(USER)
+  gender    String
+  currency  String
+  phone     String
+  location  String
+  address   String
+  image     String?
+  cover     String?
+  buyerId   String     @default(cuid())
+  sellerId  String     @default(cuid())
+  nftOwner  NftOwner[]
+  bid       Bid[]
+  like      Like[]
+  nft       Nft[]
+  createdAt DateTime   @default(now())
+  updateAt  DateTime   @updatedAt
 }
 
 model Transaction {
-  id       String   @id @default(cuid())
-  nft      Nft      @relation(fields: [nftId], references: [id])
-  nftId    String
-  buyer    Buyer    @relation(fields: [buyerId], references: [id])
-  buyerId  String
-  seller   Seller   @relation(fields: [sellerId], references: [id])
-  sellerId String
-  amount   Int
-  date     DateTime
+  id        String   @id @default(cuid())
+  nft       Nft      @relation(fields: [nftId], references: [id])
+  nftId     String
+  amount    Int
+  buyerId   String
+  sellerId  String
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 model NftOwner {
-  id               String    @id @default(cuid())
-  nft              Nft       @relation(fields: [nftId], references: [id])
-  nftId            String
-  user             User      @relation(fields: [userId], references: [id])
-  userId           String
-  adquisition_date DateTime  @default(now())
-  sell_date        DateTime?
+  id              String    @id @default(cuid())
+  nft             Nft       @relation(fields: [nftId], references: [id])
+  nftId           String
+  user            User      @relation(fields: [userId], references: [id])
+  userId          String
+  adquisitionDate DateTime  @default(now())
+  sellDate        DateTime?
+  isCurrentOwner  Boolean   @default(true)
+  createdAt       DateTime  @default(now())
+  updateAt        DateTime  @updatedAt
+  Auction         Auction[]
+  isCharged       Boolean   @default(false)
 }
 
 model Bid {
-  id     Int      @id @default(autoincrement())
-  amount Int
-  date   DateTime
-  nft    Nft      @relation(fields: [nftId], references: [id])
-  nftId  String
-  user   User     @relation(fields: [userId], references: [id])
-  userId String
+  id        Int      @id @default(autoincrement())
+  amount    Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  auction   Auction  @relation(fields: [auctionId], references: [id])
+  auctionId Int
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+}
+
+model Auction {
+  id         Int      @id @default(autoincrement())
+  finishDate DateTime
+  minAmount  Int
+  nft        Nft      @relation(fields: [nftId], references: [id])
+  nftId      String
+  nftOwner   NftOwner @relation(fields: [ownerId], references: [id])
+  ownerId    String
+  status     String
+  bid        Bid[]
 }
 
 model Like {
-  id     String @id @default(cuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  nft    Nft    @relation(fields: [nftId], references: [id])
-  nftId  String
-}
-
-model Buyer {
-  id          String        @id @default(cuid())
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String
-  Transaction Transaction[]
-}
-
-model Seller {
-  id          String        @id @default(cuid())
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String
-  Transaction Transaction[]
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  nft       Nft      @relation(fields: [nftId], references: [id])
+  nftId     String
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-  Nft  Nft[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  nft       Nft[]
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 model Collection {
-  id   Int    @id @default(autoincrement())
-  name String
-  Nft  Nft[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  nft       Nft[]
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
 }
 
 enum Role {

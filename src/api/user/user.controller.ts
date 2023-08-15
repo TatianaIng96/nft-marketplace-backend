@@ -50,7 +50,7 @@ export const updateUserHandler = async (req: Request, res: Response) => {
 }
 
 export const deleteUserHandler = async (req: AuthRequest, res: Response) => {
-    const { id } = req.user as User
+    const { id } = req.user as User;
 
     const deletedUser = await deleteUser(id);
 

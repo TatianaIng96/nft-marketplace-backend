@@ -7,6 +7,7 @@ import transactionsRouter from "./api/transaction"
 import authLocalRouter from './auth/local'
 import likeRouter from './api/like'
 import auctionsRouter from './api/auction'
+import bidRouter from './api/bid'
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -15,7 +16,7 @@ const routes = (app: Application) => {
     app.use('/api/transactions', transactionsRouter);
     app.use('/api/like',likeRouter)
     app.use('/api/auctions', auctionsRouter)
-
+    app.use('/api/bid', bidRouter)
     app.use('/auth/local', authLocalRouter)
 }
 

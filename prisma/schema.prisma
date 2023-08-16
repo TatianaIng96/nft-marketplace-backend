@@ -100,12 +100,11 @@ model Auction {
   id         Int      @id @default(autoincrement())
   finishDate DateTime
   minAmount  Int
-  ownerId    String
   status     String
   bid        Bid[]
   nft        Nft      @relation(fields: [nftId], references: [id])
   nftId      String
-  nftOwner   NftOwner @relation(fields: [ownerId], references: [id])
+  nftOwner   NftOwner @relation(fields: [nftOwnerId], references: [id])
   nftOwnerId String
   createdAt  DateTime @default(now())
   updateAt   DateTime @updatedAt

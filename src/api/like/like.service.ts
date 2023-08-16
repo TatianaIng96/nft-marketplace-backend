@@ -1,10 +1,13 @@
-import { Request, Response} from 'express';
-
 import { PrismaClient } from "@prisma/client";
+import { Like } from './like.types'
+
 const prisma = new PrismaClient()
 
-export const getAllLike = async () => {
+export const getByLike = async (id:string) => {
   const like = await prisma.like.findMany({
+    where: {
+      nftId: id
+    },
     include:{
       user: {
         select: {
@@ -22,11 +25,20 @@ export const getAllLike = async () => {
   return like
 }
 
-export const createLike = async (nftId: string, userId: string) => {
+export const createLike = async (data: Like ) => {
   const like = await prisma.like.create({
-    data: {
-      nftId,
-      userId
+    data: {...data}
+  });
+    
+  return like
+}
+
+export const deleteLike = async (data: Like ) => {
+  const Like = await prisma.like.deleteMany({
+    where: {
+      nftId: data.nftId,
+      userId: data.userId
     },
   });
+  return Like
 }

@@ -18,7 +18,7 @@ export const getAllAuctionsHandler = async (_: Request, res: Response) => {
 export const getSingleAuctionHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const auction = await getSingleAuction(id);
+    const auction = await getSingleAuction(parseInt(id));
 
     res.status(201).json(auction);
 }
@@ -36,7 +36,7 @@ export const updateAuctionHandler = async (req: Request, res: Response) => {
 
     const { body } = req;
 
-    const updatedAuction = await updateAuction(id, body);
+    const updatedAuction = await updateAuction(parseInt(id), body);
 
     return res.status(201).json(updatedAuction);
 }
@@ -44,7 +44,7 @@ export const updateAuctionHandler = async (req: Request, res: Response) => {
 export const deleteAuctionHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const deletedAuction = await deleteAuction(id);
+    const deletedAuction = await deleteAuction(parseInt(id));
 
     return deletedAuction;
 }

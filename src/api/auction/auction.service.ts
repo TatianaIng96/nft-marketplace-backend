@@ -41,7 +41,7 @@ export const getAllAuctions = async () => {
     return auctions;
 }
 
-export const getSingleAuction = async (id: string) => {
+export const getSingleAuction = async (id: number) => {
     const auction = await prisma.auction.findUnique({
         where: {
             id
@@ -90,7 +90,7 @@ export const createAuction = async (body: Auction) => {
     return createdAuction;
 }
 
-export const updateAuction = async (id: string, body: Auction) => {
+export const updateAuction = async (id: number, body: Auction) => {
     const updatedAuction = prisma.auction.update({
         where: { id },
         data: body
@@ -99,7 +99,7 @@ export const updateAuction = async (id: string, body: Auction) => {
     return updatedAuction;
 }
 
-export const deleteAuction = async (id: string) => {
+export const deleteAuction = async (id: number) => {
     const deletedAuction = prisma.auction.delete({
         where: { id }
     });

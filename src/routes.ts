@@ -7,6 +7,8 @@ import transactionsRouter from "./api/transaction"
 import authLocalRouter from './auth/local'
 import auctionsRouter from './api/auction'
 import categoriesRouter from './api/category';
+import nftOwnerRouter from "./api/nft_owner";
+import collectionRouter from "./api/collection";
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -15,6 +17,8 @@ const routes = (app: Application) => {
     app.use('/api/transactions', transactionsRouter);
     app.use('/api/auctions', auctionsRouter);
     app.use('/api/categories', categoriesRouter);
+    app.use('/api/nft-owners', nftOwnerRouter);
+    app.use('/api/collections', collectionRouter)
 
     app.use('/auth/local', authLocalRouter)
 }

@@ -3,7 +3,7 @@ import { hashPassword } from "../../auth/utils/bcrypt";
 
 import {
     getAllUsers,
-    getUserById,
+    getSingleUser,
     createUser,
     updateUser,
     deleteUser
@@ -17,10 +17,10 @@ export const getAllUsersHandler = async (_: Request, res: Response) => {
     return res.status(200).json(users);
 }
 
-export const getUserByIdHandler = async (req: Request, res: Response) => {
-    const { id } = req.params;
+export const getSingleUserHandler = async (req: AuthRequest, res: Response) => {
+    const { id } = req.user as User;
 
-    const user = await getUserById(id);
+    const user = await getSingleUser(id);
 
     return res.status(200).json(user);
 }
@@ -37,16 +37,16 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
     const user = await createUser(data);
 
-    return res.status(201).json(user);
+    return res.status(201).json({ message: 'User created successfully!', user });
 }
 
-export const updateUserHandler = async (req: Request, res: Response) => {
+export const updateUserHandler = async (req: AuthRequest, res: Response) => {
     const { body } = req;
-    const { id } = req.params;
+    const { id } = req.user as User;
 
     const updatedUser = await updateUser(id, body);
 
-    return res.status(201).json(updatedUser);
+    return res.status(201).json({ message: 'User updated successfully!', updatedUser });
 }
 
 export const deleteUserHandler = async (req: AuthRequest, res: Response) => {
@@ -54,5 +54,5 @@ export const deleteUserHandler = async (req: AuthRequest, res: Response) => {
 
     const deletedUser = await deleteUser(id);
 
-    return res.status(201).json(deletedUser);
+    return res.status(201).json({ message: 'User deleted successfully!', deletedUser });
 }

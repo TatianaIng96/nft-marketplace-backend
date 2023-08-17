@@ -5,7 +5,10 @@ const prisma = new PrismaClient();
 
 export const getAllAuctions = async () => {
     const auctions = await prisma.auction.findMany({
-        include: {
+        select: {
+            finishDate: true,
+            minAmount: true,
+            status: true,
             bid: {
                 select: {
                     amount: true,
@@ -35,18 +38,21 @@ export const getAllAuctions = async () => {
                     }
                 }
             }
-        },
+        }
     });
 
     return auctions;
 }
 
-export const getSingleAuction = async (id: string) => {
+export const getSingleAuction = async (id: number) => {
     const auction = await prisma.auction.findUnique({
         where: {
             id
         },
-        include: {
+        select: {
+            finishDate: true,
+            minAmount: true,
+            status: true,
             bid: {
                 select: {
                     amount: true,
@@ -84,25 +90,93 @@ export const getSingleAuction = async (id: string) => {
 
 export const createAuction = async (body: Auction) => {
     const createdAuction = await prisma.auction.create({
-        data: body
+        data: body,
+        select: {
+            finishDate: true,
+            minAmount: true,
+            status: true,
+            bid: {
+                select: {
+                    amount: true,
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    }
+                }
+            },
+            nft: {
+                select: {
+                    image: true,
+                    name: true
+                }
+            },
+            nftOwner: {
+                select: {
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    }
+                }
+            }
+        }
     });
 
     return createdAuction;
 }
 
-export const updateAuction = async (id: string, body: Auction) => {
+/* export const updateAuction = async (id: number, body: Auction) => {
     const updatedAuction = prisma.auction.update({
         where: { id },
-        data: body
+        data: body,
+        select: {
+            finishDate: true,
+            minAmount: true,
+            status: true,
+            bid: {
+                select: {
+                    amount: true,
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    }
+                }
+            },
+            nft: {
+                select: {
+                    image: true,
+                    name: true
+                }
+            },
+            nftOwner: {
+                select: {
+                    user: {
+                        select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    }
+                }
+            }
+        }
     });
 
     return updatedAuction;
 }
 
-export const deleteAuction = async (id: string) => {
+export const deleteAuction = async (id: number) => {
     const deletedAuction = prisma.auction.delete({
         where: { id }
     });
 
     return deletedAuction;
-}
+} */

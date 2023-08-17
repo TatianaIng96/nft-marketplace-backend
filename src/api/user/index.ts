@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import {
     getAllUsersHandler,
-    getUserByIdHandler,
+    getSingleUserHandler,
     createUserHandler,
     updateUserHandler,
     deleteUserHandler
@@ -12,10 +12,10 @@ import { isAuthenticated, hasRole } from "../../auth/auth.controller";
 
 const router = Router();
 
-router.get('/', getAllUsersHandler);
-router.get('/:id', getUserByIdHandler);
+router.get('/', isAuthenticated, getAllUsersHandler);
+router.get('/single', isAuthenticated, getSingleUserHandler);
 router.post('/', createUserHandler);
-router.put('/:id', updateUserHandler);
-router.delete('/', isAuthenticated, hasRole('ADMIN'), deleteUserHandler);
+router.put('/', isAuthenticated, hasRole('USER'), updateUserHandler);
+router.delete('/', isAuthenticated, hasRole('USER'), deleteUserHandler);
 
 export default router;

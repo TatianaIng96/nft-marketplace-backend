@@ -24,13 +24,13 @@ export const loginHandler = async (req: Request, res: Response) => {
             email: user.email,
         }
 
-        const token = signToken(payload)
-        console.log(token);
+        const token = signToken(payload);
 
         const profile = {
             firstName: user.firstName,
             lastName: user.lastName,
-            email: user.email
+            email: user.email,
+            role: user.role
         }
 
         return res.status(201).json({ token, profile });

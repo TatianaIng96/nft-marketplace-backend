@@ -7,12 +7,13 @@ import {
     updateNftHandler,
     deleteNftHandler
 } from "./nft.controller";
+import { isAuthenticated, hasRole } from "../../auth/auth.controller";
 
 const router =  Router()
 
 router.get('/',getAllNftHandler)
 router.get('/:id',getNftHandler)
-router.post('/',createNftHandler)
-router.put('/:id',updateNftHandler)
-router.delete('/:id', deleteNftHandler);
+router.post('/',isAuthenticated, hasRole('USER'),createNftHandler)
+router.put('/:id', isAuthenticated, hasRole('USER'),updateNftHandler)
+router.delete('/:id',  isAuthenticated, hasRole('ADMIN'),deleteNftHandler);
 export default router

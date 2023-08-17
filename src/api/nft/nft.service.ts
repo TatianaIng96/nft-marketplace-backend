@@ -38,6 +38,7 @@ export const updateNFT =async (input: Nft, id:string) => {
 }
 
 export const deleteNft = async(id: string) => {
+    
     const nft = await prisma.nft.delete({
       where: {
         id,

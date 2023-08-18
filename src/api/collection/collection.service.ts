@@ -9,7 +9,10 @@ export const getAllCollections = async () => {
       name: true,
       nft: {
         select: {
-          description: true
+          image: true,
+          name: true,
+          description: true,
+          price: true
         }
       }
     }
@@ -28,7 +31,10 @@ export const getCollectionById = async (id: number) => {
       name: true,
       nft: {
         select: {
-          description: true
+          image: true,
+          name: true,
+          description: true,
+          price: true
         }
       }
     }

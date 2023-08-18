@@ -5,7 +5,20 @@ import { Nft } from "./nft.types";
 const prisma = new PrismaClient()
 
 export const getAllNft = async () => {
-    const nft = await prisma.nft.findMany()
+    const nft = await prisma.nft.findMany({
+        include:{
+            like:{
+                select:{
+                    id:true
+                }
+            },
+            auction:{
+                select:{
+                    id:true
+                }
+            }
+        }
+    })
     return nft
 }
 

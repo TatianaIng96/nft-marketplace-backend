@@ -8,7 +8,6 @@ export const getAllAuctions = async () => {
         select: {
             finishDate: true,
             minAmount: true,
-            status: true,
             bid: {
                 select: {
                     amount: true,
@@ -23,7 +22,15 @@ export const getAllAuctions = async () => {
             },
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true
                 }
             },
@@ -52,7 +59,6 @@ export const getSingleAuction = async (id: number) => {
         select: {
             finishDate: true,
             minAmount: true,
-            status: true,
             bid: {
                 select: {
                     amount: true,
@@ -67,7 +73,15 @@ export const getSingleAuction = async (id: number) => {
             },
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true
                 }
             },
@@ -94,7 +108,6 @@ export const createAuction = async (body: Auction) => {
         select: {
             finishDate: true,
             minAmount: true,
-            status: true,
             bid: {
                 select: {
                     amount: true,
@@ -109,7 +122,15 @@ export const createAuction = async (body: Auction) => {
             },
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true
                 }
             },

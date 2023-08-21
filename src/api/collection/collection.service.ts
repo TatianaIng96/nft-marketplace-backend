@@ -9,7 +9,15 @@ export const getAllCollections = async () => {
       name: true,
       nft: {
         select: {
-          image: true,
+          imageForNft: {
+            select: {
+              nftImage: {
+                select: {
+                  url: true
+                }
+              }
+            }
+          },
           name: true,
           description: true,
           price: true
@@ -31,7 +39,15 @@ export const getCollectionById = async (id: number) => {
       name: true,
       nft: {
         select: {
-          image: true,
+          imageForNft: {
+            select: {
+              nftImage: {
+                select: {
+                  url: true
+                }
+              }
+            }
+          },
           name: true,
           description: true,
           price: true
@@ -41,6 +57,36 @@ export const getCollectionById = async (id: number) => {
   })
 
   return singleCollection
+}
+
+export const getCollectionByName = async (name: string) => {
+  const collection = await prisma.collection.findUnique({
+    where: { name },
+    select: {
+      id: true,
+      name: true,
+      nft: {
+        select: {
+          imageForNft: {
+            select: {
+              nftImage: {
+                select: {
+                  url: true
+                }
+              }
+            }
+          },
+          name: true,
+          description: true,
+          price: true
+        }
+      },
+      createdAt: false,
+      updateAt: false
+    }
+  });
+
+  return collection;
 }
 
 export const updateCollection = async (id: number, input: Collection) => {

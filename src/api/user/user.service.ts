@@ -21,6 +21,7 @@ export const getSingleUser = async (id: string) => {
             id,
         },
         select: {
+            id: true,
             firstName: true,
             lastName: true,
             email: true,
@@ -77,8 +78,16 @@ export const updateUser = async (id: string, body: User) => {
             phone: true,
             location: true,
             address: true,
-            image: true,
-            cover: true,
+            profileImage: {
+                select: {
+                    url: true
+                }
+            },
+            coverImage: {
+                select: {
+                    url: true
+                }
+            },
             nftOwner: true,
             nft: true,
             bid: true,

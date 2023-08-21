@@ -10,13 +10,13 @@ export const loginHandler = async (req: Request, res: Response) => {
         const user = await getUserByEmail(email);
 
         if (!user) {
-            return res.status(401).json('Invalid credentials');
+            return res.status(401).json('Invalid email');
         }
 
         const match = await comparePassword(password, user.password);
 
         if (!match) {
-            return res.status(401).json('Invalid credentials');
+            return res.status(401).json('Invalid password');
         }
 
         const payload = {

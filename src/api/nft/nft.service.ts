@@ -6,15 +6,24 @@ const prisma = new PrismaClient()
 
 export const getAllNft = async () => {
     const nft = await prisma.nft.findMany({
-        include:{
-            like:{
-                select:{
-                    id:true
+        include: {
+            like: {
+                select: {
+                    id: true
                 }
             },
-            auction:{
-                select:{
-                    id:true
+            auction: {
+                select: {
+                    id: true
+                }
+            },
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
                 }
             }
         }
@@ -22,41 +31,65 @@ export const getAllNft = async () => {
     return nft
 }
 
-export const getNftById =async (id: string) => {
+export const getNftById = async (id: string) => {
     const nft = await prisma.nft.findUnique({
-        where:{
+        where: {
             id,
+        },
+        include: {
+            like: {
+                select: {
+                    id: true
+                }
+            },
+            auction: {
+                select: {
+                    id: true
+                }
+            },
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
+                }
+            }
         }
     })
-     return nft
+    return nft
 }
 
-export const createNft = async (input: Nft) => {
+export const createNft = async (input: Nft, id: string) => {
     const nft = await prisma.nft.create({
-        data: {...input}
+        data: {
+            ...input,
+            userId: id
+        },
     })
 
     return nft
 }
 
-export const updateNFT =async (input: Nft, id:string) => {
+export const updateNFT = async (input: Nft, id: string) => {
     const nft = await prisma.nft.update({
         where: {
             id
         },
-        data: {...input}
+        data: { ...input }
     })
 
     return nft
 }
 
-export const deleteNft = async(id: string) => {
-    
+export const deleteNft = async (id: string) => {
+
     const nft = await prisma.nft.delete({
-      where: {
-        id,
-      },
+        where: {
+            id,
+        },
     });
-  
+
     return nft;
-  }
+}

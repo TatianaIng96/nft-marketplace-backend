@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { NftOwner } from "@prisma/client";
+import { NftOwnerRelation } from "./nft_owner.types";
 
 const prisma = new PrismaClient()
 
@@ -8,7 +8,15 @@ export const getAllNftOwners = async () => {
     select: {
       nft: {
         select: {
-          image: true,
+          imageForNft: {
+            select: {
+              nftImage: {
+                select: {
+                  url: true
+                }
+              }
+            }
+          },
           name: true
         }
       },
@@ -19,7 +27,6 @@ export const getAllNftOwners = async () => {
           email: true
         }
       },
-      adquisitionDate: true,
     },
   })
   return nftOwners
@@ -33,7 +40,15 @@ export const getNftOwnerById = async (id: string) => {
     select: {
       nft: {
         select: {
-          image: true,
+          imageForNft: {
+            select: {
+              nftImage: {
+                select: {
+                  url: true
+                }
+              }
+            }
+          },
           name: true
         }
       },
@@ -44,12 +59,11 @@ export const getNftOwnerById = async (id: string) => {
           email: true
         }
       },
-      adquisitionDate: true
     }
   })
 }
 
-export const createNftOwner = async (input: NftOwner) => {
+export const createNftOwner = async (input: NftOwnerRelation) => {
   const createNftOwner = prisma.nftOwner.create({
     data: { ...input }
   })

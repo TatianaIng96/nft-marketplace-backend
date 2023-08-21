@@ -1,62 +1,104 @@
-import { Request, Response} from 'express';
+import { Request, Response } from 'express';
 
-import { 
-    getAllNft,
-    getNftById, 
-    createNft,
-    updateNFT,
-    deleteNft
+import { AuthRequest } from '../../auth/auth.types';
+import { User } from '../user/user.types';
+
+import {
+  getAllNft,
+  getNftById,
+  createNft,
+  updateNFT,
+  deleteNft
 } from './nft.service';
+import { createNftOwner } from '../nft_owner/nft_owner.service';
+import { NftOwnerRelation } from '../nft_owner/nft_owner.types';
+import { getCategoryByName } from '../category/category.service';
+import { getCollectionByName } from '../collection/collection.service';
+import { Nft } from './nft.types';
 
-export const getAllNftHandler =async (_:Request, res: Response) => {
-    const nft = await getAllNft()
+export const getAllNftHandler = async (_: Request, res: Response) => {
+  const nfts = await getAllNft();
 
-    return res.status(200).json(nft)
-}
-
-export const getNftHandler = async (req:Request, res: Response) => {
-    const { id } = req.params
-    const nft = await getNftById(id)
-    if (!nft) {
-        return res.status(404).json({
-          message: 'nft not found',
-        });
+  const nftsWithOrganizedImages = nfts.map((singleNft) => {
+    return {
+      ...singleNft,
+      imageForNft: singleNft.imageForNft.map((image) => image.nftImage.url)
     }
-    
-    return res.json(nft);
+  })
+
+  return res.status(200).json(nftsWithOrganizedImages);
 }
 
-export const createNftHandler =async (req: Request, res:Response) => {
-    const data = req.body
-    const nft = await createNft(data)
+export const getNftHandler = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const nft = await getNftById(id)
+  if (!nft) {
+    return res.status(404).json({
+      message: 'nft not found',
+    });
+  }
 
-    return res.status(201).json(nft)
+  const nftWithOrganizedImages = {
+    ...nft,
+    imageForNft: nft.imageForNft.map((image) => image.nftImage.url)
+  }
+
+  return res.json(nftWithOrganizedImages);
 }
 
-export const updateNftHandler =async (req: Request, res:Response) => {
-    const data = req.body;
-    const { id } = req.params
-    const nft = await updateNFT(data,id)
-    if (!nft) {
-        return res.status(404).json({
-          message: 'nft not found',
-        });
-    }
-    return res.status(201).json(nft)
+export const createNftHandler = async (req: AuthRequest, res: Response) => {
+  const data = req.body
+
+  const category = await getCategoryByName(data.category);
+  const collection = await getCollectionByName(data.collection);
+
+  const { id } = req.user as User;
+
+  const nftToReturn = {
+    name: data.name,
+    description: data.description,
+    price: parseInt(data.price),
+    royalty: parseInt(data.royalty),
+    categoryId: category?.id,
+    collectionId: collection?.id
+  } as Nft;
+
+  const nft = await createNft(nftToReturn, id);
+
+  const dataRelation: NftOwnerRelation = {
+    userId: id,
+    nftId: nft.id
+  }
+
+  await createNftOwner(dataRelation);
+
+  return res.status(201).json(nft)
 }
 
-export const deleteNftHandler= async(req: Request, res: Response) => {
-    const { id } = req.params;
-  
-    const nft = await getNftById(id);
-  
-    if (!nft) {
-      return res.status(404).json({
-        message: 'Nft not found',
-      });
-    }
-  
-    await deleteNft(id);
-  
-    return res.json(nft);
+export const updateNftHandler = async (req: Request, res: Response) => {
+  const data = req.body;
+  const { id } = req.params
+  const nft = await updateNFT(data, id)
+  if (!nft) {
+    return res.status(404).json({
+      message: 'nft not found',
+    });
+  }
+  return res.status(201).json(nft)
+}
+
+export const deleteNftHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  const nft = await getNftById(id);
+
+  if (!nft) {
+    return res.status(404).json({
+      message: 'Nft not found',
+    });
+  }
+
+  await deleteNft(id);
+
+  return res.json(nft);
 }

@@ -11,7 +11,15 @@ export const getAllCategories = async () => {
             name: true,
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true,
                     description: true,
                     price: true
@@ -33,7 +41,45 @@ export const getSingleCategory = async (id: number) => {
             name: true,
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
+                    name: true,
+                    description: true,
+                    price: true
+                }
+            },
+            createdAt: false,
+            updateAt: false
+        }
+    });
+
+    return category;
+}
+
+export const getCategoryByName = async (name: string) => {
+    const category = await prisma.category.findUnique({
+        where: { name },
+        select: {
+            id: true,
+            name: true,
+            nft: {
+                select: {
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true,
                     description: true,
                     price: true
@@ -54,7 +100,15 @@ export const createCategory = async (body: Category) => {
             name: true,
             nft: {
                 select: {
-                    image: true,
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
                     name: true,
                     price: true
                 }

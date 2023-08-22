@@ -62,6 +62,7 @@ export const createUser = async (user: User) => {
 }
 
 export const updateUser = async (id: string, body: User) => {
+    console.log(body);
     const data = body;
 
     const updatedUser = await prisma.user.update({
@@ -94,6 +95,7 @@ export const updateUser = async (id: string, body: User) => {
             like: true,
         }
     });
+
     return updatedUser;
 }
 
@@ -103,5 +105,6 @@ export const deleteUser = async (id: string) => {
             id
         }
     });
+
     return deletedUser;
 }

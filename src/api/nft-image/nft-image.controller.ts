@@ -1,20 +1,20 @@
-import { Request, Response} from 'express';
-import { 
-  getAllNftImage, 
+import { Request, Response } from 'express';
+import {
+  getAllNftImage,
   getSingleNftImage,
   createNftImage,
   deleteNftImage
 } from './nft-image.service';
 import { AuthRequest } from '../../auth/auth.types';
 import { User } from '../user/user.types';
-import { NftImage } from './nft-image.types';
+import { NftImage, NftImageWithName } from './nft-image.types';
 
-export const getAllImageHandler =async (req:Request, res: Response) => {
- const nftImage = await getAllNftImage();
- return res.status(200).json(nftImage);
+export const getAllImageHandler = async (req: Request, res: Response) => {
+  const nftImage = await getAllNftImage();
+  return res.status(200).json(nftImage);
 }
-export const getSingleImageHandler =async (req:Request, res: Response) => {
-  const {id} = req.params;
+export const getSingleImageHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
 
   try {
     const nftImage = await getSingleNftImage(id);
@@ -23,15 +23,16 @@ export const getSingleImageHandler =async (req:Request, res: Response) => {
     console.error(error);
     res.status(500).json({ error: 'No se pudo obtener la imagen al nft.' });
   }
- 
 
 }
 
-export const getCreateImageHandler = async (req: Request, res: Response) => {
+export const createImageHandler = async (req: Request, res: Response) => {
   const data = req.body as NftImage;
-  
+
   try {
     const nftImage = await createNftImage(data);
+    // const nft = await get
+
     res.status(200).json(nftImage);
   } catch (error) {
     console.error(error);
@@ -40,8 +41,8 @@ export const getCreateImageHandler = async (req: Request, res: Response) => {
 }
 
 export const getDeleteImageHandler = async (req: Request, res: Response) => {
-  const { id } = req.params 
-  
+  const { id } = req.params
+
   try {
     const nftImage = await deleteNftImage(id);
     res.status(200).json({ message: 'Imagen eliminada exitosamente.' });

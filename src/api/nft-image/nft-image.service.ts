@@ -16,24 +16,24 @@ export const getAllNftImage = async () => {
         }
       }
     }
-  }) 
-  return nftImage
+  });
+  return nftImage;
 }
-export const getSigleNftImage = async (id:string) => {
+export const getSingleNftImage = async (id:string) => {
   const nftImage = await prisma.nftImage.findUnique({
     where:{
       id
     }
-  }) 
-  return nftImage
+  });
+  return nftImage;
 }
 
-export const createNftImage = async (data: NftImage ) => {
+export const createNftImage = async (inputData: NftImage ) => {
   const nftImage = await prisma.nftImage.create({
-    data: {...data}
+    data: {...inputData}
   });
     
-  return nftImage
+  return nftImage;
 }
 
 export const deleteNftImage = async (id: string ) => {
@@ -42,5 +42,5 @@ export const deleteNftImage = async (id: string ) => {
       id
     },
   });
-  return nftImage
+  return nftImage;
 }

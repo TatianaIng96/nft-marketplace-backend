@@ -11,6 +11,7 @@ import categoriesRouter from './api/category';
 import nftOwnerRouter from "./api/nft_owner";
 import collectionRouter from "./api/collection";
 import bidRouter from './api/bid'
+import nftImageRouter from './api/nft-image'
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -26,6 +27,7 @@ const routes = (app: Application) => {
     app.use('/api/auctions', auctionsRouter)
     app.use('/api/bid', bidRouter)
     app.use('/auth/local', authLocalRouter)
+    app.use('/api/nft-image', nftImageRouter)
 }
 
 export default routes

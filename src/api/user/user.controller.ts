@@ -25,6 +25,13 @@ export const getSingleUserHandler = async (req: AuthRequest, res: Response) => {
     return res.status(200).json(user);
 }
 
+export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+
+    const user = await getSingleUser(id);
+
+    return res.status(200).json(user);
+}
 
 export const createUserHandler = async (req: Request, res: Response) => {
     const body = req.body;
@@ -42,7 +49,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {
     const { body } = req;
-    const { id } = req.user as User;
+    const { id } = req.user!;
 
     const updatedUser = await updateUser(id, body);
 

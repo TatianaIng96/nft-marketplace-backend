@@ -74,13 +74,11 @@ export const createNftHandler = async (req: AuthRequest, res: Response) => {
 
   await createNftOwner(dataRelation);
 
-  /* const last3Images = await getLast3Images();
+  const last3Images = await getLast3Images();
 
-  for (let i = 0; i < last3Images.length; i ++) {
+  for (let i = 0; i < last3Images.length; i++) {
     await createImageForNft(nft.id, last3Images[i].id);
-  } */
-
-  // await updateNFT(last3Images, nft.id);
+  }
 
   return res.status(201).json(nft)
 }

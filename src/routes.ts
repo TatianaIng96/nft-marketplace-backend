@@ -10,7 +10,9 @@ import auctionsRouter from './api/auction'
 import categoriesRouter from './api/category';
 import nftOwnerRouter from "./api/nft_owner";
 import collectionRouter from "./api/collection";
-import bidRouter from './api/bid'
+import bidRouter from './api/bid';
+
+import coverImageRouter from './api/coverImage';
 import nftImageRouter from './api/nft-image'
 
 const routes = (app: Application) => {
@@ -21,8 +23,11 @@ const routes = (app: Application) => {
     app.use('/api/auctions', auctionsRouter);
     app.use('/api/categories', categoriesRouter);
     app.use('/api/nft-owners', nftOwnerRouter);
-    app.use('/api/collections', collectionRouter)
+    app.use('/api/collections', collectionRouter);
 
+    app.use('/api/cover-image', coverImageRouter);
+
+    app.use('/auth/local', authLocalRouter);
     app.use('/api/like', likeRouter)
     app.use('/api/auctions', auctionsRouter)
     app.use('/api/bid', bidRouter)
@@ -30,4 +35,4 @@ const routes = (app: Application) => {
     app.use('/api/nft-image', nftImageRouter)
 }
 
-export default routes
+export default routes;

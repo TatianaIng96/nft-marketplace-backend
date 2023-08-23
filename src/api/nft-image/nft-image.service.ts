@@ -3,6 +3,7 @@ import { NftImage, NftImageWithName } from "./nft-image.types";
 import { Nft } from "../nft/nft.types";
 
 const prisma = new PrismaClient()
+
 export const getAllNftImage = async () => {
   const nftImage = await prisma.nftImage.findMany({
     include: {
@@ -22,9 +23,9 @@ export const getAllNftImage = async () => {
 
 export const getLast3Images = async () => {
   const nftImage = await prisma.nftImage.findMany({
-    take: 3, // Obtener solo los 3 últimos registros
+    take: 3,
     orderBy: {
-      createdAt: 'desc', // Ordenar por fecha de creación en orden descendente (los más recientes primero)
+      createdAt: 'desc',
     },
     include: {
       imageForNft: {
@@ -50,14 +51,25 @@ export const getSingleNftImage = async (id: string) => {
   return nftImage;
 }
 
-export const createNftImage = async (inputData: NftImage) => {
-  const nftImage = await prisma.nftImage.create({
+export const createNftImage = async (inputData: any) => {
+  const { url_1, url_2, url_3 } = inputData;
+  const nftImage_1 = await prisma.nftImage.create({
     data: {
-      ...inputData,
+      url: url_1,
+    }
+  });
+  const nftImage_2 = await prisma.nftImage.create({
+    data: {
+      url: url_2,
+    }
+  });
+  const nftImage_3 = await prisma.nftImage.create({
+    data: {
+      url: url_3,
     }
   });
 
-  return nftImage;
+  return [nftImage_1, nftImage_2, nftImage_3];
 }
 
 export const deleteNftImage = async (id: string) => {

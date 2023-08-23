@@ -13,6 +13,7 @@ import collectionRouter from "./api/collection";
 import bidRouter from './api/bid';
 
 import coverImageRouter from './api/coverImage';
+import nftImageRouter from './api/nft-image'
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -26,10 +27,12 @@ const routes = (app: Application) => {
 
     app.use('/api/cover-image', coverImageRouter);
 
-    app.use('/api/like', likeRouter);
-    app.use('/api/auctions', auctionsRouter);
-    app.use('/api/bid', bidRouter);
     app.use('/auth/local', authLocalRouter);
+    app.use('/api/like', likeRouter)
+    app.use('/api/auctions', auctionsRouter)
+    app.use('/api/bid', bidRouter)
+    app.use('/auth/local', authLocalRouter)
+    app.use('/api/nft-image', nftImageRouter)
 }
 
 export default routes;

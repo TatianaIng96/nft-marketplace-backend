@@ -26,6 +26,7 @@ const routes = (app: Application) => {
     app.use('/api/nft-owners', nftOwnerRouter);
     app.use('/api/collections', collectionRouter);
 
+    app.use('/api/cover-image', coverImageRouter);
     app.use('/api/like', likeRouter);
     app.use('/api/auctions', auctionsRouter);
     app.use('/api/bid', bidRouter);

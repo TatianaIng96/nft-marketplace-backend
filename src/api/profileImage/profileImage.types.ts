@@ -1,3 +1,5 @@
 import { ProfileImage as ProfileImageModel } from "@prisma/client";
 
-export type ProfileImage = ProfileImageModel
+export interface ProfileUserImage extends ProfileImageModel {
+  profileImage?: string
+}

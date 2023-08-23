@@ -5,8 +5,7 @@ import {
   createNftImage,
   deleteNftImage
 } from './nft-image.service';
-import { AuthRequest } from '../../auth/auth.types';
-import { User } from '../user/user.types';
+
 import { NftImage, NftImageWithName } from './nft-image.types';
 
 export const getAllImageHandler = async (req: Request, res: Response) => {
@@ -31,7 +30,6 @@ export const createImageHandler = async (req: Request, res: Response) => {
 
   try {
     const nftImage = await createNftImage(data);
-    // const nft = await get
 
     res.status(200).json(nftImage);
   } catch (error) {

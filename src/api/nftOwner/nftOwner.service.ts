@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { NftOwnerRelation, NftOwner } from "./nft_owner.types";
+import { NftOwnerRelation, NftOwner } from "./nftOwner.types";
 
 const prisma = new PrismaClient();
 

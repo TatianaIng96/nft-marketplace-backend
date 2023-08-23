@@ -5,7 +5,7 @@ import {
   getNftOwnerById,
   createNftOwner,
   updateNftOwner
-} from './nft_owner.service';
+} from './nftOwner.service';
 
 export const getAllNftOwnersHandler = async (_: Request, res: Response) => {
   const nftOwners = await getAllNftOwners();

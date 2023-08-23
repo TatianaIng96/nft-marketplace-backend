@@ -5,11 +5,9 @@ const prisma = new PrismaClient();
 
 export const getAllUsers = async () => {
     const users = await prisma.user.findMany({
-        select: {
-            firstName: true,
-            lastName: true,
-            email: true,
-            role: true
+        include: {
+            profileImage: true,
+            coverImage: true,
         }
     });
     return users;
@@ -19,18 +17,6 @@ export const getSingleUser = async (id: string) => {
     const user = await prisma.user.findUnique({
         where: {
             id,
-        },
-        select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            bio: true,
-            gender: true,
-            currency: true,
-            phone: true,
-            location: true,
-            address: true
         }
     });
     return user;
@@ -94,6 +80,7 @@ export const updateUser = async (id: string, body: User) => {
             like: true,
         }
     });
+
     return updatedUser;
 }
 
@@ -103,5 +90,6 @@ export const deleteUser = async (id: string) => {
             id
         }
     });
+
     return deletedUser;
 }

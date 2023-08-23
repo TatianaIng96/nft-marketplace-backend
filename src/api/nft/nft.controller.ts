@@ -10,8 +10,8 @@ import {
   updateNFT,
   deleteNft
 } from './nft.service';
-import { createNftOwner } from '../nft_owner/nft_owner.service';
-import { NftOwnerRelation } from '../nft_owner/nft_owner.types';
+import { createNftOwner } from '../nftOwner/nftOwner.service';
+import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
 import { getCategoryByName } from '../category/category.service';
 import { getCollectionByName } from '../collection/collection.service';
 import { Nft } from './nft.types';
@@ -74,13 +74,11 @@ export const createNftHandler = async (req: AuthRequest, res: Response) => {
 
   await createNftOwner(dataRelation);
 
-  /* const last3Images = await getLast3Images();
+  const last3Images = await getLast3Images();
 
-  for (let i = 0; i < last3Images.length; i ++) {
+  for (let i = 0; i < last3Images.length; i++) {
     await createImageForNft(nft.id, last3Images[i].id);
-  } */
-
-  // await updateNFT(last3Images, nft.id);
+  }
 
   return res.status(201).json(nft)
 }

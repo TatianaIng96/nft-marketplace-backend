@@ -8,11 +8,13 @@ import authLocalRouter from './auth/local';
 import likeRouter from './api/like';
 import auctionsRouter from './api/auction';
 import categoriesRouter from './api/category';
-import nftOwnerRouter from "./api/nft_owner";
+import nftOwnerRouter from "./api/nftOwner";
 import collectionRouter from "./api/collection";
 import bidRouter from './api/bid';
 import nftImageRouter from './api/nft-image';
 import profileImageRouter from './api/profile-image';
+
+import coverImageRouter from './api/coverImage';
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);

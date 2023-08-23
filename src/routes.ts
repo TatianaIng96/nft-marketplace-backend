@@ -12,7 +12,7 @@ import nftOwnerRouter from "./api/nftOwner";
 import collectionRouter from "./api/collection";
 import bidRouter from './api/bid';
 import nftImageRouter from './api/nft-image';
-import profileImageRouter from './api/profile-image';
+import profileImageRouter from './api/profileImage';
 
 import coverImageRouter from './api/coverImage';
 

@@ -4,7 +4,7 @@ import {
   createProfileImageHandler,
   updateProfileimageHandler,
   deleteProfileImageHandler
-} from "./profile-image.controller";
+} from "./profileImage.controller";
 import { isAuthenticated } from "../../auth/auth.controller";
 import { formData } from "../../middlewares/formData";
 

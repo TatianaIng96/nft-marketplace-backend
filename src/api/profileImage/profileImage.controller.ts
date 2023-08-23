@@ -4,7 +4,7 @@ import {
   createProfileImage,
   updateProfileimage,
   deleteProfileImage
-} from "./profile-image.service";
+} from "./profileImage.service";
 
 export const createProfileImageHandler = async (req: Request, res: Response) => {
   const data = req.body;

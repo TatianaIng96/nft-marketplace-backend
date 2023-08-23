@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ProfileImage } from "./profile-image.types";
+import { ProfileImage } from "./profileImage.types";
 
 const prisma = new PrismaClient();
 

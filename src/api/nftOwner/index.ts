@@ -5,7 +5,7 @@ import {
   getNftOwnerByIdHandler,
   createNftOwnerHandler,
   updateNftOwnerHandler
-} from "./nft_owner.controller";
+} from "./nftOwner.controller";
 
 import { isAuthenticated, hasRole } from "../../auth/auth.controller";
 

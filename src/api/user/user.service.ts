@@ -17,6 +17,39 @@ export const getSingleUser = async (id: string) => {
     const user = await prisma.user.findUnique({
         where: {
             id,
+        },
+        select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            email: true,
+            bio: true,
+            gender: true,
+            currency: true,
+            phone: true,
+            location: true,
+            address: true,
+            profileImage: true,
+            coverImage: true,
+            transaction: true,
+            nftOwner: true,
+            bid: true,
+            like: {
+                select: {
+                    nft: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    },
+                    id: false,
+                    userId: false,
+                    nftId: false,
+                    createdAt: false,
+                    updateAt: false
+                }
+            },
+            nft: true
         }
     });
     return user;

@@ -10,6 +10,7 @@ import {
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
 import { User } from './user.types';
+import { signToken } from "../../auth/auth.service";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
     const users = await getAllUsers();
@@ -44,7 +45,21 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
     const user = await createUser(data);
 
-    return res.status(201).json({ message: 'User created successfully!', user });
+    const payload = {
+        id: user.id,
+        email: user.email,
+    }
+
+    const token = signToken(payload);
+
+    const profile = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+    }
+
+    return res.status(201).json({ message: 'User created successfully!', token, profile });
 }
 
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {

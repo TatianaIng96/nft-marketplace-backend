@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { NftOwnerRelation } from "./nft_owner.types";
+import { NftOwnerRelation, NftOwner } from "./nftOwner.types";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 export const getAllNftOwners = async () => {
   const nftOwners = await prisma.nftOwner.findMany({
@@ -28,9 +28,10 @@ export const getAllNftOwners = async () => {
         }
       },
     },
-  })
-  return nftOwners
-}
+  });
+
+  return nftOwners;
+};
 
 export const getNftOwnerById = async (id: string) => {
   const owner = await prisma.nftOwner.findUnique({
@@ -60,13 +61,24 @@ export const getNftOwnerById = async (id: string) => {
         }
       },
     }
-  })
-}
+  });
 
-export const createNftOwner = async (input: NftOwnerRelation) => {
-  const createNftOwner = prisma.nftOwner.create({
-    data: { ...input }
-  })
+  return owner;
+};
 
-  return createNftOwner
+export const createNftOwner = async (inputData: NftOwnerRelation) => {
+  const createNftOwner = await prisma.nftOwner.create({
+    data: { ...inputData }
+  });
+
+  return createNftOwner;
+};
+
+export const updateNftOwner = async (id: string, inputData: NftOwner) => {
+  const updateSingleNftOwner = await prisma.nftOwner.update({
+    where: { id },
+    data: { ...inputData }
+  });
+
+  return updateSingleNftOwner;
 }

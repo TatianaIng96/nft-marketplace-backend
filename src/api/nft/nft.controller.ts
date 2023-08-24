@@ -10,8 +10,8 @@ import {
   updateNFT,
   deleteNft
 } from './nft.service';
-import { createNftOwner } from '../nft_owner/nft_owner.service';
-import { NftOwnerRelation } from '../nft_owner/nft_owner.types';
+import { createNftOwner } from '../nftOwner/nftOwner.service';
+import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
 import { getCategoryByName } from '../category/category.service';
 import { getCollectionByName } from '../collection/collection.service';
 import { Nft } from './nft.types';

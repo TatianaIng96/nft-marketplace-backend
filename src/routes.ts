@@ -3,17 +3,18 @@ import { Application } from "express";
 import healthcheckRouter from "./api/healthcheck";
 import nftRouter from "./api/nft";
 import usersRouter from "./api/user";
-import transactionsRouter from "./api/transaction"
-import authLocalRouter from './auth/local'
-import likeRouter from './api/like'
-import auctionsRouter from './api/auction'
+import transactionsRouter from "./api/transaction";
+import authLocalRouter from './auth/local';
+import likeRouter from './api/like';
+import auctionsRouter from './api/auction';
 import categoriesRouter from './api/category';
-import nftOwnerRouter from "./api/nft_owner";
+import nftOwnerRouter from "./api/nftOwner";
 import collectionRouter from "./api/collection";
 import bidRouter from './api/bid';
+import nftImageRouter from './api/nft-image';
+import profileImageRouter from './api/profileImage';
 
 import coverImageRouter from './api/coverImage';
-import nftImageRouter from './api/nft-image'
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -26,13 +27,12 @@ const routes = (app: Application) => {
     app.use('/api/collections', collectionRouter);
 
     app.use('/api/cover-image', coverImageRouter);
-
+    app.use('/api/like', likeRouter);
+    app.use('/api/auctions', auctionsRouter);
+    app.use('/api/bid', bidRouter);
     app.use('/auth/local', authLocalRouter);
-    app.use('/api/like', likeRouter)
-    app.use('/api/auctions', auctionsRouter)
-    app.use('/api/bid', bidRouter)
-    app.use('/auth/local', authLocalRouter)
-    app.use('/api/nft-image', nftImageRouter)
+    app.use('/api/nft-image', nftImageRouter);
+    app.use('/api/profile-image', profileImageRouter);
 }
 
 export default routes;

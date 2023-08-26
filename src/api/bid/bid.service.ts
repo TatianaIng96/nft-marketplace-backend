@@ -10,20 +10,26 @@ export const getAllBid = async (id: number) => {
       auctionId: id
     },
     select: {
+      id:true,
       amount: true,
       createdAt: true,
       user: {
         select: {
+          id:true,
           firstName: true,
-          lastName: true
+          lastName: true,
+          profileImage:true,
         }
       },
       auction: {
         select: {
+          id:true,
           finishDate: true,
           minAmount: true,
+          nftOwnerId:true,
           nft: {
             select: {
+              id: true,
               name: true,
               imageForNft: {
                 select: {

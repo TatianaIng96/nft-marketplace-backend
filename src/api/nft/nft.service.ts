@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { Nft } from "./nft.types";
 
 const prisma = new PrismaClient()
+const now = new Date(); // Obtiene la fecha y hora actual
 
 export const getAllNft = async () => {
     const nft = await prisma.nft.findMany({
@@ -43,6 +44,11 @@ export const getNftById = async (id: string) => {
                 }
             },
             auction: {
+                where: {
+                    finishDate: {
+                        gt: now // Filtra las subastas cuya fecha de finalización es mayor que la fecha actual
+                    }
+                },
                 select: {
                     id: true
                 }

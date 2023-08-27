@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 import { Nft } from "./nft.types";
+import { User } from '../user/user.types';
 
 const prisma = new PrismaClient()
 const now = new Date(); // Obtiene la fecha y hora actual
@@ -58,6 +59,19 @@ export const getNftById = async (id: string) => {
                     nftImage: {
                         select: {
                             url: true
+                        }
+                    }
+                }
+            },
+            nftOwner:{
+                where:{
+                    isCurrentOwner: true,
+                },
+                select:{
+                    user:{
+                        select:{
+                            id: true,
+                            firstName: true
                         }
                     }
                 }

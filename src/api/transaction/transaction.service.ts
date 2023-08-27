@@ -19,6 +19,8 @@ export const getTransactionById = async (id: string) => {
 }
 
 export const createTransaction = async (input: Transaction) => {
+  console.log(input);
+  
   const newtransaction = await prisma.transaction.create({
     data: { ...input }
   })

@@ -146,13 +146,17 @@ export const getSingleAuction = async (id: number) => {
                             }
                         }
                     },
-                    name: true
+                    name: true,
+                    id: true,
                 }
             },
             nftOwner: {
                 select: {
+                    id: true,
+                    isCurrentOwner: true,
                     user: {
                         select: {
+                            id: true,
                             firstName: true,
                             lastName: true,
                             email: true

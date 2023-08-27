@@ -23,7 +23,17 @@ export const getSingleUserHandler = async (req: AuthRequest, res: Response) => {
 
     const user = await getSingleUser(id);
 
-    return res.status(200).json(user);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+
+    const userToReturn = {
+        ...user,
+        coverImage: user.coverImage[0].url,
+        profileImage: user.coverImage[0].url
+    }
+
+    return res.status(200).json(userToReturn);
 }
 
 export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {

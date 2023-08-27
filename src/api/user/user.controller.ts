@@ -62,9 +62,26 @@ export const createUserHandler = async (req: Request, res: Response) => {
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }
 
+export const adminCreateUserHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+
+    const createdUser = await createUser(body);
+
+    res.status(201).json(createdUser);
+}
+
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {
     const { body } = req;
     const { id } = req.user!;
+
+    const updatedUser = await updateUser(id, body);
+
+    return res.status(201).json({ message: 'User updated successfully!', updatedUser });
+}
+
+export const updateUserByIdHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+    const { id } = req.params;
 
     const updatedUser = await updateUser(id, body);
 

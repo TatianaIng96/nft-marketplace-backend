@@ -5,7 +5,9 @@ import {
     getSingleUserHandler,
     getUserByIdHandler,
     createUserHandler,
+    adminCreateUserHandler,
     updateUserHandler,
+    updateUserByIdHandler,
     deleteUserHandler
 } from "./user.controller";
 
@@ -17,7 +19,9 @@ router.get('/', isAuthenticated, getAllUsersHandler);
 router.get('/single', isAuthenticated, getSingleUserHandler);
 router.get('/:id', isAuthenticated, getUserByIdHandler);
 router.post('/', createUserHandler);
-router.put('/', isAuthenticated, hasRole('USER'), updateUserHandler);
+router.post('/create', isAuthenticated, hasRole('ADMIN'), adminCreateUserHandler);
+router.put('/single', isAuthenticated, updateUserHandler);
+router.put('/:id', isAuthenticated, hasRole('ADMIN'), updateUserByIdHandler);
 router.delete('/', isAuthenticated, hasRole('USER'), deleteUserHandler);
 
 export default router;

@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
 import { Nft } from "./nft.types";
+import { User } from '../user/user.types';
 
 const prisma = new PrismaClient()
+const now = new Date(); // Obtiene la fecha y hora actual
 
 export const getAllNft = async () => {
     const nft = await prisma.nft.findMany({
@@ -43,15 +45,33 @@ export const getNftById = async (id: string) => {
                 }
             },
             auction: {
+                orderBy: {
+                    createdAt: 'asc' // Ordenar subastas por createdAt en orden descendente
+                },
+                take: 1,
                 select: {
-                    id: true
-                }
+                    id: true,
+                    finishDate: true,
+                },    
             },
             imageForNft: {
                 select: {
                     nftImage: {
                         select: {
                             url: true
+                        }
+                    }
+                }
+            },
+            nftOwner:{
+                where:{
+                    isCurrentOwner: true,
+                },
+                select:{
+                    user:{
+                        select:{
+                            id: true,
+                            firstName: true
                         }
                     }
                 }

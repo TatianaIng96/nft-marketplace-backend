@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import {
     getAllAuctions,
     getSingleAuction,
+    getAllAuctionsNft,
     createAuction
 } from "./auction.service"
 
@@ -16,6 +17,13 @@ export const getSingleAuctionHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const auction = await getSingleAuction(parseInt(id));
+
+    res.status(201).json(auction);
+}
+export const getSingleAuctionNftHandler = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const auction = await getAllAuctionsNft(id);
 
     res.status(201).json(auction);
 }

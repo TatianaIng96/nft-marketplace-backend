@@ -11,6 +11,7 @@ export const getAllBidHandler =async (req:Request, res: Response) => {
 
 export const getCreateBidHandler =async (req:Request, res: Response) => {
   const data = req.body as Bid
+  console.log(data);
 
   try {
     const bid = await createBid(data)

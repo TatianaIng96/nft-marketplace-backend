@@ -38,6 +38,7 @@ export const getAllAuctions = async () => {
                 select: {
                     user: {
                         select: {
+                            id:true,
                             firstName: true,
                             lastName: true,
                             email: true
@@ -50,13 +51,13 @@ export const getAllAuctions = async () => {
 
     return auctions;
 }
-
-export const getSingleAuction = async (id: number) => {
-    const auction = await prisma.auction.findUnique({
-        where: {
-            id
+export const getAllAuctionsNft = async (id:string) => {
+    const auctions = await prisma.auction.findMany({
+        where:{
+            nftId: id
         },
         select: {
+            id: true,
             finishDate: true,
             minAmount: true,
             bid: {
@@ -89,6 +90,73 @@ export const getSingleAuction = async (id: number) => {
                 select: {
                     user: {
                         select: {
+                            firstName: true,
+                            lastName: true,
+                            email: true
+                        }
+                    }
+                }
+            },
+        },
+        orderBy: {
+            createdAt: 'desc' // Ordenar por createdAt en orden descendente
+        }
+    });
+
+    return auctions;
+}
+
+export const getSingleAuction = async (id: number) => {
+    const auction = await prisma.auction.findUnique({
+        where: {
+            id
+        },
+        select: {
+            id:true,
+            finishDate: true,
+            minAmount: true,
+            nftOwnerId:true,
+            createdAt:true,
+            bid: {
+                select: {
+                    id:true,
+                    amount: true,
+                    createdAt: true,
+                    user: {
+                        select: {
+                            id:true,
+                            firstName: true,
+                            lastName: true,
+                            profileImage:true,
+                        }
+                    }
+                },
+                orderBy: {
+                    createdAt: 'desc' // Ordenar por createdAt en orden descendente
+                },
+            },
+            nft: {
+                select: {
+                    imageForNft: {
+                        select: {
+                            nftImage: {
+                                select: {
+                                    url: true
+                                }
+                            }
+                        }
+                    },
+                    name: true,
+                    id: true,
+                }
+            },
+            nftOwner: {
+                select: {
+                    id: true,
+                    isCurrentOwner: true,
+                    user: {
+                        select: {
+                            id: true,
                             firstName: true,
                             lastName: true,
                             email: true

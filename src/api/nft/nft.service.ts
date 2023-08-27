@@ -44,14 +44,14 @@ export const getNftById = async (id: string) => {
                 }
             },
             auction: {
-                where: {
-                    finishDate: {
-                        gt: now // Filtra las subastas cuya fecha de finalización es mayor que la fecha actual
-                    }
+                orderBy: {
+                    createdAt: 'asc' // Ordenar subastas por createdAt en orden descendente
                 },
+                take: 1,
                 select: {
-                    id: true
-                }
+                    id: true,
+                    finishDate: true,
+                },    
             },
             imageForNft: {
                 select: {

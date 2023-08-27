@@ -14,7 +14,7 @@ export const getAllNftOwnersHandler = async (_: Request, res: Response) => {
 };
 
 export const getNftOwnerByIdHandler = async (req: Request, res: Response) => {
-  const { id } = req.body;
+  const { id } = req.params
   const nftOwner = await getNftOwnerById(id);
 
   return res.status(200).json(nftOwner);

@@ -55,9 +55,10 @@ export const getNftOwnerById = async (id: string) => {
       },
       user: {
         select: {
+          id:true,
           firstName: true,
           lastName: true,
-          email: true
+          profileImage:true,
         }
       },
     }

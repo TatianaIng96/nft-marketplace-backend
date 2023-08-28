@@ -4,42 +4,56 @@ import { Nft } from '../nft/nft.types';
 
 const prisma = new PrismaClient()
 
-export const getAllBid = async (id:number) => {
+export const getAllBid = async (id: number) => {
   const bid = await prisma.bid.findMany({
     where: {
       auctionId: id
     },
     select: {
-      amount:true,
-      createdAt:true,
+      id:true,
+      amount: true,
+      createdAt: true,
       user: {
         select: {
+          id:true,
           firstName: true,
-          lastName:true
+          lastName: true,
+          profileImage:true,
         }
       },
-      auction:{
-        select:{
-          finishDate:true,
-          minAmount:true,
-          nft:{
+      auction: {
+        select: {
+          id:true,
+          finishDate: true,
+          minAmount: true,
+          nftOwnerId:true,
+          nft: {
             select: {
-              name:true,
-              image: true
+              id: true,
+              name: true,
+              imageForNft: {
+                select: {
+                  nftImage: {
+                    select: {
+                      url: true
+                    }
+                  }
+                }
+              },
             }
           },
         }
       },
-      
+
     }
   })
   return bid
 }
 
-export const createBid =async (data:Bid) => {
+export const createBid = async (data: Bid) => {
   const bid = await prisma.bid.create({
-    data: {...data}
+    data: { ...data }
   });
-    
+
   return bid
 } 

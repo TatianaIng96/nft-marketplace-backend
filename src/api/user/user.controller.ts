@@ -10,6 +10,7 @@ import {
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
 import { User } from './user.types';
+import { signToken } from "../../auth/auth.service";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
     const users = await getAllUsers();
@@ -22,9 +23,26 @@ export const getSingleUserHandler = async (req: AuthRequest, res: Response) => {
 
     const user = await getSingleUser(id);
 
-    return res.status(200).json(user);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+
+    const userToReturn = {
+        ...user,
+        coverImage: user.coverImage[0].url,
+        profileImage: user.coverImage[0].url
+    }
+
+    return res.status(200).json(userToReturn);
 }
 
+export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
+    const { id } = req.params;
+
+    const user = await getSingleUser(id);
+
+    return res.status(200).json(user);
+}
 
 export const createUserHandler = async (req: Request, res: Response) => {
     const body = req.body;
@@ -37,12 +55,50 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
     const user = await createUser(data);
 
-    return res.status(201).json({ message: 'User created successfully!', user });
+    const payload = {
+        id: user.id,
+        email: user.email,
+    }
+
+    const token = signToken(payload);
+
+    const profile = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+    }
+
+    return res.status(201).json({ message: 'User created successfully!', token, profile });
+}
+
+export const adminCreateUserHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+
+    const hashedPassword = await hashPassword(body.password);
+
+    const data = {
+        ...body,
+        password: hashedPassword
+    }
+
+    const user = await createUser(data);
+
+    return res.status(201).json(user);
 }
 
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {
     const { body } = req;
-    const { id } = req.user as User;
+    const { id } = req.user!;
+
+    const updatedUser = await updateUser(id, body);
+
+    return res.status(201).json({ message: 'User updated successfully!', updatedUser });
+}
+
+export const updateUserByIdHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+    const { id } = req.params;
 
     const updatedUser = await updateUser(id, body);
 

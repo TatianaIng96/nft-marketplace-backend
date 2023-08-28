@@ -5,11 +5,9 @@ const prisma = new PrismaClient();
 
 export const getAllUsers = async () => {
     const users = await prisma.user.findMany({
-        select: {
-            firstName: true,
-            lastName: true,
-            email: true,
-            role: true
+        include: {
+            profileImage: true,
+            coverImage: true,
         }
     });
     return users;
@@ -21,6 +19,7 @@ export const getSingleUser = async (id: string) => {
             id,
         },
         select: {
+            id: true,
             firstName: true,
             lastName: true,
             email: true,
@@ -29,7 +28,28 @@ export const getSingleUser = async (id: string) => {
             currency: true,
             phone: true,
             location: true,
-            address: true
+            address: true,
+            profileImage: true,
+            coverImage: true,
+            transaction: true,
+            nftOwner: true,
+            bid: true,
+            like: {
+                select: {
+                    nft: {
+                        select: {
+                            id: true,
+                            name: true
+                        }
+                    },
+                    id: false,
+                    userId: false,
+                    nftId: false,
+                    createdAt: false,
+                    updateAt: false
+                }
+            },
+            nft: true
         }
     });
     return user;
@@ -50,6 +70,7 @@ export const createUser = async (user: User) => {
     const createdUser = await prisma.user.create({
         data,
         select: {
+            id: true,
             firstName: true,
             lastName: true,
             email: true,
@@ -77,14 +98,23 @@ export const updateUser = async (id: string, body: User) => {
             phone: true,
             location: true,
             address: true,
-            image: true,
-            cover: true,
+            profileImage: {
+                select: {
+                    url: true
+                }
+            },
+            coverImage: {
+                select: {
+                    url: true
+                }
+            },
             nftOwner: true,
             nft: true,
             bid: true,
             like: true,
         }
     });
+
     return updatedUser;
 }
 
@@ -94,5 +124,6 @@ export const deleteUser = async (id: string) => {
             id
         }
     });
+
     return deletedUser;
 }

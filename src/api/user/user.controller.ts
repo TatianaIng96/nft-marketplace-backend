@@ -75,9 +75,16 @@ export const createUserHandler = async (req: Request, res: Response) => {
 export const adminCreateUserHandler = async (req: Request, res: Response) => {
     const { body } = req;
 
-    const createdUser = await createUser(body);
+    const hashedPassword = await hashPassword(body.password);
 
-    res.status(201).json(createdUser);
+    const data = {
+        ...body,
+        password: hashedPassword
+    }
+
+    const user = await createUser(data);
+
+    return res.status(201).json(user);
 }
 
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {

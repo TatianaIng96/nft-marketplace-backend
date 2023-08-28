@@ -4,7 +4,7 @@ import configExpress from "./config/express";
 import routes from "./routes";
 
 const app = express()
-const port = 8080
+const port = process.env.PORT || 8080
 
 configExpress(app)
 

@@ -23,7 +23,17 @@ export const getSingleUserHandler = async (req: AuthRequest, res: Response) => {
 
     const user = await getSingleUser(id);
 
-    return res.status(200).json(user);
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+    }
+
+    const userToReturn = {
+        ...user,
+        coverImage: user.coverImage[0].url,
+        profileImage: user.coverImage[0].url
+    }
+
+    return res.status(200).json(userToReturn);
 }
 
 export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
@@ -62,9 +72,26 @@ export const createUserHandler = async (req: Request, res: Response) => {
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }
 
+export const adminCreateUserHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+
+    const createdUser = await createUser(body);
+
+    res.status(201).json(createdUser);
+}
+
 export const updateUserHandler = async (req: AuthRequest, res: Response) => {
     const { body } = req;
     const { id } = req.user!;
+
+    const updatedUser = await updateUser(id, body);
+
+    return res.status(201).json({ message: 'User updated successfully!', updatedUser });
+}
+
+export const updateUserByIdHandler = async (req: Request, res: Response) => {
+    const { body } = req;
+    const { id } = req.params;
 
     const updatedUser = await updateUser(id, body);
 

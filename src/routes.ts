@@ -25,7 +25,6 @@ const routes = (app: Application) => {
     app.use('/api/categories', categoriesRouter);
     app.use('/api/nft-owners', nftOwnerRouter);
     app.use('/api/collections', collectionRouter);
-
     app.use('/api/cover-image', coverImageRouter);
     app.use('/api/like', likeRouter);
     app.use('/api/auctions', auctionsRouter);
@@ -33,6 +32,12 @@ const routes = (app: Application) => {
     app.use('/auth/local', authLocalRouter);
     app.use('/api/nft-image', nftImageRouter);
     app.use('/api/profile-image', profileImageRouter);
+
+    app.use(function (_, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
 }
 
 export default routes;

@@ -3,14 +3,19 @@ import express from "express";
 import configExpress from "./config/express";
 import routes from "./routes";
 
-const app = express()
-const port = process.env.PORT || 8080
+const app = express();
+const port = process.env.PORT || 8080;
 
-configExpress(app)
+configExpress(app);
 
-routes(app)
+routes(app);
+
+app.all('/', function (_, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
-})
-
+});

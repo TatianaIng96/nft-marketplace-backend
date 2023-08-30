@@ -10,12 +10,6 @@ configExpress(app);
 
 routes(app);
 
-app.all('/', (_, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
-
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);
 });

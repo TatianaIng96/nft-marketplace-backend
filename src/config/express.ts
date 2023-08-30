@@ -4,7 +4,7 @@ import morgan from 'morgan';
 
 const configExpress = (app: Application) => {
     app.use(cors({
-        origin: "+"
+        origin: "*"
     }));
     app.use(morgan('dev'));
     app.use(express.json());

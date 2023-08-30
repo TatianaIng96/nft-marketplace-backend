@@ -27,6 +27,20 @@ export const getAllNft = async () => {
                         }
                     }
                 }
+            },
+            nftOwner: {
+                where: {
+                    isCurrentOwner: true,
+                },
+                select: {
+                    id:true,
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true
+                        }
+                    }
+                }
             }
         }
     })
@@ -68,7 +82,6 @@ export const getNftById = async (id: string) => {
                     isCurrentOwner: true,
                 },
                 select: {
-                    id:true,
                     user: {
                         select: {
                             id: true,

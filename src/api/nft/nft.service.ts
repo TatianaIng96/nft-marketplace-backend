@@ -60,9 +60,11 @@ export const getNftById = async (id: string) => {
             },
             auction: {
                 orderBy: {
-                    createdAt: 'asc' // Ordenar subastas por createdAt en orden descendente
+                    createdAt: 'desc' // Ordenar subastas por createdAt en orden descendente
                 },
-                take: 1,
+                where: {
+                    nftId: id // Filtrar subastas por nftOwnerId igual a id del NFT
+                },
                 select: {
                     id: true,
                     finishDate: true,

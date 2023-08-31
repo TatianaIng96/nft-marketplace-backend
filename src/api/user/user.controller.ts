@@ -9,8 +9,10 @@ import {
     deleteUser
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
-import { User } from './user.types';
+import { User, CreatedUser } from './user.types';
 import { signToken } from "../../auth/auth.service";
+import { sendMailWithSendgrid } from "../../config/sendGridjccs";
+import { welcomeEmail } from "../../utils/emails";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
     const users = await getAllUsers();
@@ -47,7 +49,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         password: hashedPassword
     }
 
-    const user = await createUser(data);
+    const user: CreatedUser = await createUser(data);
 
     const payload = {
         id: user.id,
@@ -62,6 +64,8 @@ export const createUserHandler = async (req: Request, res: Response) => {
         email: user.email,
         role: user.role
     }
+
+    sendMailWithSendgrid(welcomeEmail(user));
 
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }

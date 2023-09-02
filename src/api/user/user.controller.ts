@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { hashPassword } from "../../auth/utils/bcrypt";
+import { hashPassword, createValidationToken } from "../../auth/utils/bcrypt";
 
 import {
     getAllUsers,
@@ -46,7 +46,9 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
     const data = {
         ...body,
-        password: hashedPassword
+        password: hashedPassword,
+        validateToken: createValidationToken(body.email),
+        tokenExpires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     }
 
     const user: CreatedUser = await createUser(data);
@@ -62,7 +64,9 @@ export const createUserHandler = async (req: Request, res: Response) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role
+        role: user.role,
+        // validateToken: user.validateToken,
+        // tokenExpires: user.tokenExpires,
     }
 
     sendMailWithSendgrid(welcomeEmail(user));

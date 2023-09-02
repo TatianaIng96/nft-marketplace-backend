@@ -8,7 +8,7 @@ export const welcomeEmail = (user: CreatedUser) => {
         templateId: 'd-76345ae56436460da1b8f4ba59881365',
         dynamic_template_data: {
             firstName: user.firstName,
-            redirectUrl: 'http://localhost:5173/'
+            redirectUrl: `http://localhost:5173/activate-account/${user.validateToken}`
         }
     }
 

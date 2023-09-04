@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { hashPassword } from "../../auth/utils/bcrypt";
+import { hashPassword, createValidationToken } from "../../auth/utils/bcrypt";
 
 import {
     getAllUsers,
@@ -10,8 +10,10 @@ import {
     deleteUser
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
-import { User } from './user.types';
+import { User, CreatedUser } from './user.types';
 import { signToken } from "../../auth/auth.service";
+import { sendMailWithSendgrid } from "../../config/sendGridjccs";
+import { welcomeEmail } from "../../utils/emails";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
     const users = await getAllUsers();
@@ -45,10 +47,12 @@ export const createUserHandler = async (req: Request, res: Response) => {
 
     const data = {
         ...body,
-        password: hashedPassword
+        password: hashedPassword,
+        validateToken: createValidationToken(body.email),
+        tokenExpires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     }
 
-    const user = await createUser(data);
+    const user: CreatedUser = await createUser(data);
 
     const payload = {
         id: user.id,
@@ -61,8 +65,12 @@ export const createUserHandler = async (req: Request, res: Response) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        role: user.role
+        role: user.role,
+        // validateToken: user.validateToken,
+        // tokenExpires: user.tokenExpires,
     }
+
+    sendMailWithSendgrid(welcomeEmail(user));
 
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }

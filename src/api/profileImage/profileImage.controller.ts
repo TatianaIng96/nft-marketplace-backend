@@ -4,6 +4,8 @@ import {
   getProfileImage,
   createProfileImage,
   updateProfileimage,
+  getProfileImageByUserId,
+  deleteProfileImage
 } from "./profileImage.service";
 import { User } from "../user/user.types";
 import { AuthRequest } from "../../auth/auth.types";
@@ -32,13 +34,37 @@ export const createProfileImageHandler = async (req: AuthRequest, res: Response)
 };
 
 export const updateProfileimageHandler = async (req: AuthRequest, res: Response) => {
-  const { id } = req.params;
   const { url } = req.body;
-
+  const { id: userId } = req.user as User;
   try {
-    const updateImage = await updateProfileimage(id, url);
-    res.status(201).json(updateImage);
+    const currentProfileImage = await getProfileImageByUserId(userId);
+
+    if (!currentProfileImage) {
+      return res.status(404).json({ message: 'Profile image not found' });
+    }
+
+    const { id } = currentProfileImage;
+
+    await updateProfileimage(id, url);
+
+    res.status(201).json({ message: 'Profile image updated successfully' });
   } catch (error) {
-    res.status(400).json({ error: "Image coudn't be updated" });
+    res.status(400).json({ error: "Image couldn't be updated" });
   };
 };
+
+export const deleteProfileImageHandler = async (req: AuthRequest, res: Response) => {
+  const { id: userId } = req.user as User;
+
+  const currentProfileImage = await getProfileImageByUserId(userId);
+
+  if (!currentProfileImage) {
+    return res.status(404).json({ message: 'Profile image not found' });
+  }
+
+  const { id } = currentProfileImage;
+
+  await deleteProfileImage(id);
+
+  res.status(201).json({ message: 'Cover image deleted' });
+}

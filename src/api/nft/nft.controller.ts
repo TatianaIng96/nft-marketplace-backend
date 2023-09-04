@@ -29,7 +29,6 @@ export const getAllNftHandler = async (req: Request, res: Response) => {
  
 
   if (!likes && !category && !collection && !price) {
-  // Si no se proporcionan parámetros de consulta, obtén todos los NFT
     const allNfts = await getAllNft();
     return res.status(200).json(allNfts);
   }

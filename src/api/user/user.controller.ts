@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { hashPassword, createValidationToken } from "../../auth/utils/bcrypt";
+import { hashPassword, createValidationToken, comparePassword } from "../../auth/utils/bcrypt";
 
 import {
     getAllUsers,
@@ -10,7 +10,7 @@ import {
     deleteUser
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
-import { User, CreatedUser } from './user.types';
+import { User, CreatedUser, UserWithPassword } from './user.types';
 import { signToken } from "../../auth/auth.service";
 import { sendMailWithSendgrid } from "../../config/sendGridjccs";
 import { welcomeEmail } from "../../utils/emails";
@@ -111,14 +111,25 @@ export const updateUserByIdHandler = async (req: Request, res: Response) => {
 export const updatePasswordHandler = async (req: AuthRequest, res: Response) => {
     const { id } = req.user!;
     const body = req.body;
-    const hashedPassword = await hashPassword(body.password)
 
-    const data = {
-        ...body,
-        password: hashedPassword,
+    const loggedUser = await getSingleUser(id);
+
+    if (!loggedUser) {
+        return "Not find user"
     }
 
-    const updateUserPassword = await updatePassword(id, data);
+    const match = await comparePassword(body.oldPassword, loggedUser.password)
+
+    if (!match) {
+        return "Old password do not match, incorrect password"
+    }
+
+    console.log(match);
+
+
+    const hashedPassword = await hashPassword(body.newPassword);
+
+    const updateUserPassword = await updatePassword(id, hashedPassword);
     res.status(201).json({ message: 'Password succesfully updated', updateUserPassword });
 }
 

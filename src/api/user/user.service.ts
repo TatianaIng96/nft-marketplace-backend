@@ -26,6 +26,7 @@ export const getSingleUser = async (id: string) => {
             bio: true,
             gender: true,
             currency: true,
+            password: true,
             phone: true,
             location: true,
             address: true,

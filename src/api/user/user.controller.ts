@@ -5,6 +5,7 @@ import {
     getAllUsers,
     getSingleUser,
     createUser,
+    updatePassword,
     updateUser,
     deleteUser
 } from "./user.service";
@@ -97,6 +98,20 @@ export const updateUserByIdHandler = async (req: Request, res: Response) => {
     const updatedUser = await updateUser(id, body);
 
     return res.status(201).json({ message: 'User updated successfully!', updatedUser });
+}
+
+export const updatePasswordHandler = async (req: AuthRequest, res: Response) => {
+    const { id } = req.user!;
+    const body = req.body;
+    const hashedPassword = await hashPassword(body.password)
+
+    const data = {
+        ...body,
+        password: hashedPassword,
+    }
+
+    const updateUserPassword = await updatePassword(id, data);
+    res.status(201).json({ message: 'Password succesfully updated', updateUserPassword });
 }
 
 export const deleteUserHandler = async (req: AuthRequest, res: Response) => {

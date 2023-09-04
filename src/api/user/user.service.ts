@@ -64,6 +64,7 @@ export const getUserByEmail = async (email: string) => {
 
     return user;
 }
+
 export const createUser = async (user: User) => {
     const data = user;
 
@@ -85,7 +86,9 @@ export const updateUser = async (id: string, body: User) => {
     const data = body;
 
     const updatedUser = await prisma.user.update({
-        where: { id },
+        where: {
+            id
+        },
         data,
         select: {
             firstName: true,
@@ -117,6 +120,17 @@ export const updateUser = async (id: string, body: User) => {
 
     return updatedUser;
 }
+
+export const updatePassword = async (id: string, password: string) => {
+    const updateUserPassword = await prisma.user.update({
+        where: { id },
+        data: {
+            password: password,
+        },
+    })
+
+    return updateUserPassword;
+};
 
 export const deleteUser = async (id: string) => {
     const deletedUser = await prisma.user.delete({

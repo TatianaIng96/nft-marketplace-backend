@@ -55,6 +55,16 @@ export const getSingleUser = async (id: string) => {
     return user;
 }
 
+export const getUserByValidateToken = async (token: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            validateToken: token
+        }
+    });
+
+    return user;
+};
+
 export const getUserByEmail = async (email: string) => {
     const user = await prisma.user.findUnique({
         where: {
@@ -74,7 +84,9 @@ export const createUser = async (user: User) => {
             firstName: true,
             lastName: true,
             email: true,
-            role: true
+            role: true,
+            validateToken: true,
+            tokenExpires: true,
         }
     });
 

@@ -49,27 +49,30 @@ model ImageForNft {
 }
 
 model User {
-  id           String         @id @default(cuid())
-  firstName    String
-  lastName     String
-  email        String         @unique
-  password     String
-  bio          String?
-  role         Role           @default(USER)
-  gender       String?
-  currency     String?
-  phone        String?
-  location     String?
-  address      String?
-  profileImage ProfileImage[]
-  coverImage   CoverImage[]
-  transaction  Transaction[]
-  nftOwner     NftOwner[]
-  bid          Bid[]
-  like         Like[]
-  nft          Nft[]
-  createdAt    DateTime       @default(now())
-  updateAt     DateTime       @updatedAt
+  id            String         @id @default(cuid())
+  firstName     String
+  lastName      String
+  email         String         @unique
+  password      String
+  bio           String?
+  role          Role           @default(USER)
+  gender        String?
+  currency      String?
+  phone         String?
+  location      String?
+  address       String?
+  isActive      Boolean        @default(false)
+  validateToken String?        @unique
+  tokenExpires  DateTime?
+  profileImage  ProfileImage[]
+  coverImage    CoverImage[]
+  transaction   Transaction[]
+  nftOwner      NftOwner[]
+  bid           Bid[]
+  like          Like[]
+  nft           Nft[]
+  createdAt     DateTime       @default(now())
+  updateAt      DateTime       @updatedAt
 }
 
 model ProfileImage {

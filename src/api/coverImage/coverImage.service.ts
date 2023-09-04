@@ -4,9 +4,15 @@ const prisma = new PrismaClient();
 
 export const getCoverImage = async (id: string) => {
     const coverImage = await prisma.coverImage.findUnique({
-        where: {
-            id
-        }
+        where: { id }
+    });
+
+    return coverImage;
+}
+
+export const getCoverImageByUserId = async (userId: string) => {
+    const coverImage = await prisma.coverImage.findFirst({
+        where: { userId },
     });
 
     return coverImage;
@@ -37,4 +43,8 @@ export const updateCoverImage = async (url: string, id: string) => {
     });
 
     return coverImage;
+}
+
+export const deleteCoverImage = async (id: string) => {
+    await prisma.coverImage.delete({ where: { id } });
 }

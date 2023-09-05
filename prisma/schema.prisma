@@ -62,7 +62,7 @@ model User {
   location      String?
   address       String?
   isActive      Boolean        @default(false)
-  validateToken String?
+  validateToken String?        @unique
   tokenExpires  DateTime?
   profileImage  ProfileImage[]
   coverImage    CoverImage[]

@@ -57,7 +57,7 @@ export const getSingleUser = async (id: string) => {
 }
 
 export const getUserByValidateToken = async (token: string) => {
-    const user = await prisma.user.findFirst({
+    const user = await prisma.user.findUnique({
         where: {
             validateToken: token
         }

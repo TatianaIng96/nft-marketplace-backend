@@ -8,6 +8,7 @@ import {
     adminCreateUserHandler,
     updateUserHandler,
     updateUserByIdHandler,
+    updatePasswordHandler,
     deleteUserHandler
 } from "./user.controller";
 
@@ -21,6 +22,7 @@ router.get('/:id', isAuthenticated, getUserByIdHandler);
 router.post('/', createUserHandler);
 router.post('/create', isAuthenticated, hasRole('ADMIN'), adminCreateUserHandler);
 router.put('/single', isAuthenticated, updateUserHandler);
+router.put('/change-password', isAuthenticated, updatePasswordHandler);
 router.put('/:id', isAuthenticated, hasRole('ADMIN'), updateUserByIdHandler);
 router.delete('/', isAuthenticated, hasRole('USER'), deleteUserHandler);
 

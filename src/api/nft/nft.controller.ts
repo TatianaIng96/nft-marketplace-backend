@@ -8,7 +8,9 @@ import {
   getNftById,
   createNft,
   updateNFT,
-  deleteNft
+  deleteNft,
+  filterCategory,
+  filterCollection
 } from './nft.service';
 import { createNftOwner } from '../nftOwner/nftOwner.service';
 import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
@@ -18,17 +20,21 @@ import { Nft } from './nft.types';
 import { getLast3Images } from '../nft-image/nft-image.service';
 import { createImageForNft } from '../imageForNft/imageForNft.service';
 
-export const getAllNftHandler = async (_: Request, res: Response) => {
-  const nfts = await getAllNft();
+export const getAllNftHandler = async (req: Request, res: Response) => {
+ // const nfts = await getAllNft();
+ const { likes, category, collection, price } = req.query;
+ const categoryId = filterCategory(category ? category.toString() : undefined)
+ const collectionId = filterCollection(collection ? collection.toString() : undefined)
+ const priceInt = price ? parseInt(price.toString()): undefined;
+ 
 
-  const nftsWithOrganizedImages = nfts.map((singleNft) => {
-    return {
-      ...singleNft,
-      imageForNft: singleNft.imageForNft.map((image) => image.nftImage.url)
-    }
-  })
-
-  return res.status(200).json(nftsWithOrganizedImages);
+  if (!likes && !category && !collection && !price) {
+    const allNfts = await getAllNft();
+    return res.status(200).json(allNfts);
+  }
+  
+  const nfts = await getAllNft(likes ? likes.toString() : undefined, categoryId, collectionId, priceInt);
+  return res.status(200).json(nfts);
 }
 
 export const getNftHandler = async (req: Request, res: Response) => {

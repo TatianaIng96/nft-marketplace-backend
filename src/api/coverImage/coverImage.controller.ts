@@ -7,7 +7,9 @@ import { User } from "../user/user.types";
 import {
     getCoverImage,
     createCoverImage,
-    updateCoverImage
+    updateCoverImage,
+    getCoverImageByUserId,
+    deleteCoverImage
 } from "./coverImage.service";
 
 export const getCoverImageHandler = async (req: Request, res: Response) => {
@@ -29,14 +31,33 @@ export const createCoverImageHandler = async (req: AuthRequest, res: Response) =
 
 export const updateCoverImageHandler = async (req: AuthRequest, res: Response) => {
     const { url } = req.body;
-    const { id } = req.params;
+    const { id: userId } = req.user as User;
 
-    const loggedUser = req.user as User;
-    const userId = loggedUser.id;
+    const currentCoverImage = await getCoverImageByUserId(userId);
 
-    const coverImage = await updateCoverImage(url, id);
+    if (!currentCoverImage) {
+        return res.status(404).json({ message: 'Cover image not found' });
+    }
 
-    // crear servicio de updateUserCoverImage para que quede ligada la imagen al usuario logueado
+    const { id } = currentCoverImage;
 
-    res.status(201).json(coverImage);
+    await updateCoverImage(url, id);
+
+    res.status(201).json({ message: 'Cover image updated successfully' });
+}
+
+export const deleteCoverImageHandler = async (req: AuthRequest, res: Response) => {
+    const { id: userId } = req.user as User;
+
+    const currentCoverImage = await getCoverImageByUserId(userId);
+
+    if (!currentCoverImage) {
+        return res.status(404).json({ message: 'Cover image not found' });
+    }
+
+    const { id } = currentCoverImage;
+
+    await deleteCoverImage(id);
+
+    res.status(201).json({ message: 'Cover image deleted' });
 }

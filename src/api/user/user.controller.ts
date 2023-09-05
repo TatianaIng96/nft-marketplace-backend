@@ -52,7 +52,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         tokenExpires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     }
 
-    const user: CreatedUser = await createUser(data);
+    const user: User = await createUser(data);
 
     const payload = {
         id: user.id,

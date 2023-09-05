@@ -8,9 +8,11 @@ export const welcomeEmail = (user: CreatedUser) => {
         templateId: 'd-76345ae56436460da1b8f4ba59881365',
         dynamic_template_data: {
             firstName: user.firstName,
-            redirectUrl: `http://localhost:5173/activate-account/${user.validateToken}`
+            redirectUrl: `${process.env.FRONTEND_URL}/activate-account/${user.validateToken}`
         }
     }
 
     return emailData;
 }
+
+// transaction email templateId: d-9b3a7459ad4b4d13a8bcdb40301c3e85

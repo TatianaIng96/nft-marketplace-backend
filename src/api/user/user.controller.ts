@@ -12,7 +12,7 @@ import {
 import { AuthRequest } from "../../auth/auth.types";
 import { User, CreatedUser, UserWithPassword } from './user.types';
 import { signToken } from "../../auth/auth.service";
-import { sendMailWithSendgrid } from "../../config/sendGridjccs";
+import { sendMailWithSendgrid } from "../../config/sendGrid";
 import { welcomeEmail } from "../../utils/emails";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
@@ -66,8 +66,6 @@ export const createUserHandler = async (req: Request, res: Response) => {
         lastName: user.lastName,
         email: user.email,
         role: user.role,
-        // validateToken: user.validateToken,
-        // tokenExpires: user.tokenExpires,
     }
 
     sendMailWithSendgrid(welcomeEmail(user));

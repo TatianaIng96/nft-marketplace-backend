@@ -1,6 +1,6 @@
-import { User } from "../api/user/user.types";
+import { CreatedUser, User } from "../api/user/user.types";
 
-export const welcomeEmail = (user: User) => {
+export const welcomeEmail = (user: CreatedUser) => {
     const emailData = {
         from: 'No reply <nft.marketplace.mir@gmail.com>',
         to: user.email,

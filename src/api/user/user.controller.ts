@@ -42,7 +42,7 @@ export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
 }
 
 export const createUserHandler = async (req: Request, res: Response) => {
-    const body = req.body;
+    const body = req.body as User;
     const hashedPassword = await hashPassword(body.password);
 
     const data = {

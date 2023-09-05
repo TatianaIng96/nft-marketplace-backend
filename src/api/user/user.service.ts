@@ -87,8 +87,8 @@ export const createUser = async (user: User) => {
             lastName: true,
             email: true,
             role: true,
-            validateToken: true,
-            tokenExpires: true,
+            // validateToken: true,
+            // tokenExpires: true,
         }
     });
 

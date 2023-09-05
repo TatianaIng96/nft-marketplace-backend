@@ -10,7 +10,7 @@ import {
     deleteUser
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
-import { User, CreatedUser, UserWithPassword } from './user.types';
+import { User, CreatedUser } from './user.types';
 import { signToken } from "../../auth/auth.service";
 import { sendMailWithSendgrid } from "../../config/sendGrid";
 import { welcomeEmail } from "../../utils/emails";
@@ -42,7 +42,7 @@ export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
 }
 
 export const createUserHandler = async (req: Request, res: Response) => {
-    const body = req.body;
+    const body = req.body as User;
     const hashedPassword = await hashPassword(body.password);
 
     const data = {

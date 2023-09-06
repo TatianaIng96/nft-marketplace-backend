@@ -36,4 +36,3 @@ export const transactionEmail = async (transaction: Transaction) => {
 
     return emailData;
 }
-// transaction email templateId: d-9b3a7459ad4b4d13a8bcdb40301c3e85

@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const bid_controller_1 = require("./bid.controller");
+const auth_controller_1 = require("../../auth/auth.controller");
+const auth_controller_2 = require("../../auth/auth.controller");
+const router = (0, express_1.Router)();
+router.get('/:autionId', auth_controller_1.isAuthenticated, bid_controller_1.getAllBidHandler);
+router.post('/', auth_controller_1.isAuthenticated, (0, auth_controller_2.hasRole)('USER'), bid_controller_1.getCreateBidHandler);
+exports.default = router;

@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const coverImage_controller_1 = require("./coverImage.controller");
+const auth_controller_1 = require("../../auth/auth.controller");
+const formData_1 = require("../../middlewares/formData");
+const router = (0, express_1.Router)();
+router.get('/:id', auth_controller_1.isAuthenticated, coverImage_controller_1.getCoverImageHandler);
+router.post('/', auth_controller_1.isAuthenticated, formData_1.formData, coverImage_controller_1.createCoverImageHandler);
+router.put('/', auth_controller_1.isAuthenticated, formData_1.formData, coverImage_controller_1.updateCoverImageHandler);
+router.delete('/', auth_controller_1.isAuthenticated, coverImage_controller_1.deleteCoverImageHandler);
+exports.default = router;

@@ -47,7 +47,7 @@ export const loginHandler = async (req: Request, res: Response) => {
 export const activateAccountHandler = async (req: Request, res: Response) => {
     const { token } = req.params;
     try {
-        const user = await getUserByValidateToken(token as string);
+        const user = await getUserByValidateToken(token);
 
         if (!user) {
             return res.status(404).json({ message: 'Invalid credentials' });

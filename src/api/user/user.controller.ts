@@ -52,7 +52,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         tokenExpires: new Date(Date.now() + 1000 * 60 * 60 * 24),
     }
 
-    const user: User = await createUser(data);
+    const user: CreatedUser = await createUser(data);
 
     const payload = {
         id: user.id,
@@ -68,7 +68,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         role: user.role,
     }
 
-    sendMailWithSendgrid(await welcomeEmail(user.id));
+    sendMailWithSendgrid(welcomeEmail(user));
 
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }

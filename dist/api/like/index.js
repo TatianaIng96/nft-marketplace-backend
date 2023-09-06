@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const like_controller_1 = require("./like.controller");
+const auth_controller_1 = require("../../auth/auth.controller");
+const auth_controller_2 = require("../../auth/auth.controller");
+const router = (0, express_1.Router)();
+router.get('/:nftId', like_controller_1.getAllLikeHandler);
+router.post('/:nftId', auth_controller_1.isAuthenticated, (0, auth_controller_2.hasRole)('USER'), like_controller_1.getCreateLikeHandler);
+router.delete('/:nftId', auth_controller_1.isAuthenticated, (0, auth_controller_2.hasRole)('USER'), like_controller_1.getDeleteLikeHandler);
+exports.default = router;

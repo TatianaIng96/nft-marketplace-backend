@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const collection_controller_1 = require("./collection.controller");
+const auth_controller_1 = require("../../auth/auth.controller");
+const router = (0, express_1.Router)();
+router.get('/', collection_controller_1.getAllCollectionsHandler);
+router.post('/', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('ADMIN'), collection_controller_1.createCollectionHandler);
+router.get('/:id', collection_controller_1.getCollectionByIdHandler);
+router.put('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('ADMIN'), collection_controller_1.updateCollectionHandler);
+router.delete('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('ADMIN'), collection_controller_1.deleteCollectionHandler);
+exports.default = router;

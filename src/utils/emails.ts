@@ -10,7 +10,7 @@ export const welcomeEmail = (user: CreatedUser) => {
         subject: 'Welcome to Nuron!',
         templateId: 'd-76345ae56436460da1b8f4ba59881365',
         dynamic_template_data: {
-            firstName: user.firstName,
+            firstName: user?.firstName,
             redirectUrl: `${process.env.FRONTEND_URL}/activate-account/${user.validateToken}`
         }
     }

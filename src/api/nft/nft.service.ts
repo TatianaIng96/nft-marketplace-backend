@@ -94,6 +94,7 @@ export const getNftById = async (id: string) => {
                 select: {
                     id: true,
                     finishDate: true,
+                    bid:true
                 },
             },
             imageForNft: {

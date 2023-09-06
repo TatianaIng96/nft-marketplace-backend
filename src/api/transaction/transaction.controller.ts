@@ -3,6 +3,8 @@ import{NftOwner} from '../nftOwner/nftOwner.types'
 import { NftOwnerRelation  } from '../nftOwner/nftOwner.types';
 import { Request, Response } from "express";
 import { updateNftOwner, createNftOwner } from '../nftOwner/nftOwner.service';
+import { transactionEmail } from '../../utils/emails';
+import { sendMailWithSendgrid } from "../../config/sendGrid";
 import Stripe from 'stripe';
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY as string;
@@ -23,7 +25,7 @@ export const getAllTransactionsHandler = async (_: Request, res: Response) => {
 }
 
 export const getTransactionByIdHandler = async (req: Request, res: Response) => {
-  const { id } = req.body
+  const { id } = req.params
   const transaction = await getTransactionById(id)
 
   return res.status(200).json(transaction)
@@ -60,7 +62,12 @@ export const createTransactionHandler = async (req: Request, res: Response) => {
     const newTransaction = await createTransaction(data)
     const updateOwner = updateNftOwner(nftOwnerId, data_owner);
     const newNftOwner = await createNftOwner(newOwner);
-     res.status(201).json({ message: 'Payment successful', payment })
+
+
+    sendMailWithSendgrid(await transactionEmail(newTransaction));
+    
+
+    res.status(201).json({ message: 'Payment successful', payment })
   } catch (error: any) {
     console.log(error);
     

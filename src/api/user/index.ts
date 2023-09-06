@@ -5,6 +5,7 @@ import {
     getSingleUserHandler,
     getUserByIdHandler,
     createUserHandler,
+    recoverPasswordHandler,
     adminCreateUserHandler,
     updateUserHandler,
     updateUserByIdHandler,
@@ -20,6 +21,7 @@ router.get('/', isAuthenticated, getAllUsersHandler);
 router.get('/single', isAuthenticated, getSingleUserHandler);
 router.get('/:id', isAuthenticated, getUserByIdHandler);
 router.post('/', createUserHandler);
+router.post('/recover-password', recoverPasswordHandler);
 router.post('/create', isAuthenticated, hasRole('ADMIN'), adminCreateUserHandler);
 router.put('/single', isAuthenticated, updateUserHandler);
 router.put('/change-password', isAuthenticated, updatePasswordHandler);

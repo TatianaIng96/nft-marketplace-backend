@@ -7,7 +7,8 @@ import {
     createUser,
     updatePassword,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
 import { User, CreatedUser } from './user.types';
@@ -129,6 +130,20 @@ export const updatePasswordHandler = async (req: AuthRequest, res: Response) => 
 
     const updateUserPassword = await updatePassword(id, hashedPassword);
     res.status(201).json({ message: 'Password succesfully updated', updateUserPassword });
+}
+
+export const recoverPasswordHandler = async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    try {
+        const user = await getUserByEmail(email);
+
+        if (!user) {
+            return res.status(404).json({ message: 'The email is not registered in our database' });
+        }
+
+        sendMailWithSendgrid(recoverPasswordEmail());
+    } catch (error: any) { }
 }
 
 export const deleteUserHandler = async (req: AuthRequest, res: Response) => {

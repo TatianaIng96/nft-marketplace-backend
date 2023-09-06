@@ -68,7 +68,7 @@ export const createUserHandler = async (req: Request, res: Response) => {
         role: user.role,
     }
 
-    sendMailWithSendgrid(welcomeEmail(user));
+    sendMailWithSendgrid(await welcomeEmail(user.id));
 
     return res.status(201).json({ message: 'User created successfully!', token, profile });
 }

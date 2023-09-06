@@ -30,6 +30,7 @@ export const getSingleUser = async (id: string) => {
             phone: true,
             location: true,
             address: true,
+            validateToken: true,
             profileImage: true,
             coverImage: true,
             transaction: true,

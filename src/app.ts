@@ -8,12 +8,14 @@ const port = process.env.PORT || 8080;
 
 configExpress(app);
 
-routes(app);
-
-app.all('/', (_, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+app.use((_, res, next) => {
+    res.append('Access-Control-Allow-Origin', ['*']);
+    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.append('Access-Control-Allow-Headers', 'Content-Type');
     next();
 });
+
+routes(app);
 
 app.listen(port, () => {
     console.log(`App listening on port ${port}`);

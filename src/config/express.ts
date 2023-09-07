@@ -3,7 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 
 const configExpress = (app: Application) => {
-    app.use(cors({ origin: "*" }));
+    app.use(cors());
     app.use(morgan('dev'));
     app.use(express.json());
 }

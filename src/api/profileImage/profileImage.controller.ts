@@ -27,6 +27,7 @@ export const createProfileImageHandler = async (req: AuthRequest, res: Response)
 
   try {
     const createImage = await createProfileImage(url, id);
+    res.setHeader('Access-Control-Allow-Origin', 'https://nft-marketplace-frontend-9z7xtntur-tatianaing96.vercel.app/edit-profile-image');
     res.status(201).json(createImage);
   } catch (error) {
     res.status(401).json({ error: "Image coudn't be created" });

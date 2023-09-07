@@ -9,7 +9,7 @@ const port = process.env.PORT || 8080;
 configExpress(app);
 
 app.use((_, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://nft-marketplace-frontend-9z7xtntur-tatianaing96.vercel.app/*');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     next(); // Continue processing the request
 });
 

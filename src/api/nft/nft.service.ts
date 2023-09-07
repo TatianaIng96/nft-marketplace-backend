@@ -123,6 +123,56 @@ export const getNftById = async (id: string) => {
     })
     return nft
 }
+export const getNfUserId = async (id: string) => {
+    const nft = await prisma.nft.findMany({
+        where: {
+            userId: id,
+        },
+        include: {
+            like: {
+                select: {
+                    id: true
+                }
+            },
+            auction: {
+                orderBy: {
+                    createdAt: 'desc' // Ordenar subastas por createdAt en orden descendente
+                },
+                where: {
+                    nftId: id // Filtrar subastas por nftOwnerId igual a id del NFT
+                },
+                select: {
+                    id: true,
+                    finishDate: true,
+                    bid:true
+                },
+            },
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
+                }
+            },
+            nftOwner: {
+                where: {
+                    isCurrentOwner: true,
+                },
+                select: {
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+    return nft
+}
 
 export const createNft = async (input: Nft, id: string) => {
     const nft = await prisma.nft.create({

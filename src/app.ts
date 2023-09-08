@@ -11,23 +11,18 @@ const port = process.env.PORT || 8080;
 //     next()
 // })
 
-app.use((_, res, next) => {
-    res.setHeader(
-        "Access-Control-Allow-Origin",
-        "*"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Methods",
-        "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS,CONNECT,TRACE"
-    );
-    res.setHeader(
-        "Access-Control-Allow-Headers",
-        "Content-Type, Authorization, X-Content-Type-Options, Accept, X-Requested-With, Origin, Access-Control-Request-Method, Access-Control-Request-Headers"
-    );
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Allow-Private-Network", "true");
-    res.setHeader("Access-Control-Max-Age", 7200);
-
+app.use(function (req, res, next) {
+    const allowedOrigins = ['https://nft-marketplace-frontend-afh57hu61-tatianaing96.vercel.app/edit-profile-image'];
+    const origin = req.headers.origin;
+    if (!origin) {
+        return res.json({ message: 'No origin header found' });
+    }
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    res.header("Access-Control-Allow-credentials", "true");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, UPDATE");
     next();
 });
 

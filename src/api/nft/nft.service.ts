@@ -1,14 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
 import { Nft } from "./nft.types";
-import { User } from '../user/user.types';
-import { Collection } from '../collection/collection.types';
 
 const prisma = new PrismaClient()
 const now = new Date(); // Obtiene la fecha y hora actual
 
-export const getAllNft = async (likes?: string, categoryId?:number, collectionId?: number, price?: number) => {
-    const nftFilters:any = {
+export const getAllNft = async (likes?: string, categoryId?: number, collectionId?: number, price?: number, page: number = 1, pageSize: number = 3) => {
+    const skip = (page - 1) * pageSize;
+    const nftFilters: any = {
+        skip,
+        take: pageSize,
         include: {
             like: {
                 select: {
@@ -34,7 +35,7 @@ export const getAllNft = async (likes?: string, categoryId?:number, collectionId
                     isCurrentOwner: true,
                 },
                 select: {
-                    id:true,
+                    id: true,
                     user: {
                         select: {
                             id: true,
@@ -44,7 +45,7 @@ export const getAllNft = async (likes?: string, categoryId?:number, collectionId
                 }
             },
         },
-    
+
     };
 
     if (likes !== undefined) {
@@ -69,8 +70,12 @@ export const getAllNft = async (likes?: string, categoryId?:number, collectionId
         };
     }
 
-    const nfts = await prisma.nft.findMany(nftFilters);
-    return nfts
+    const [nfts, totalNfts] = await Promise.all([
+        prisma.nft.findMany(nftFilters),
+        prisma.nft.count()
+    ])
+
+    return { nfts, totalNfts }
 }
 
 export const getNftById = async (id: string) => {
@@ -159,40 +164,40 @@ export const deleteNft = async (id: string) => {
 
 export const filterCategory = (category: string | undefined) => {
 
-    const categories:{ [key: string]: number }= { 
-        "art": 2, 
-        "music": 4, 
-        "video": 5, 
+    const categories: { [key: string]: number } = {
+        "art": 2,
+        "music": 4,
+        "video": 5,
         "collectionable": 6,
     }
- 
-    let categoryId :number | undefined;
+
+    let categoryId: number | undefined;
 
     for (let key in categories) {
-        const value= categories[key];
+        const value = categories[key];
         if (key === category) {
-        categoryId = value;
-        break; // Si encontramos la clave "art", salimos del bucle
+            categoryId = value;
+            break; // Si encontramos la clave "art", salimos del bucle
         }
     }
 
     return categoryId
 }
 export const filterCollection = (collection: string | undefined) => {
-    const collections:{ [key: string]: number }= { 
+    const collections: { [key: string]: number } = {
         "art-decco": 2,
-        "bored-ape-yacht-club": 4, 
-        "mutant-ape-yacht-club": 5, 
+        "bored-ape-yacht-club": 4,
+        "mutant-ape-yacht-club": 5,
         "art-blocks-factory": 6
     }
- 
-    let collectionId :number | undefined;
+
+    let collectionId: number | undefined;
 
     for (let key in collections) {
-        const value= collections[key];
+        const value = collections[key];
         if (key === collection) {
-        collectionId = value;
-        break; // Si encontramos la clave "art", salimos del bucle
+            collectionId = value;
+            break; // Si encontramos la clave "art", salimos del bucle
         }
     }
 

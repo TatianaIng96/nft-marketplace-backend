@@ -10,7 +10,8 @@ import {
   updateNFT,
   deleteNft,
   filterCategory,
-  filterCollection
+  filterCollection,
+  getNfUserId
 } from './nft.service';
 import { createNftOwner } from '../nftOwner/nftOwner.service';
 import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
@@ -59,6 +60,22 @@ export const getNftHandler = async (req: Request, res: Response) => {
   }
 
   return res.json(nftWithOrganizedImages);
+}
+export const getNftUserHandler = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const nft = await getNfUserId(id)
+  if (!nft) {
+    return res.status(404).json({
+      message: 'nft not found',
+    });
+  }
+
+  // const nftWithOrganizedImages = {
+  //   ...nft,
+  //   imageForNft: nft.imageForNft.map((image) => image.nftImage.url)
+  // }
+
+  return res.json(nft);
 }
 
 export const createNftHandler = async (req: AuthRequest, res: Response) => {

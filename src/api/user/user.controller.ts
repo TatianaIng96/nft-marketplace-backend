@@ -7,13 +7,14 @@ import {
     createUser,
     updatePassword,
     updateUser,
-    deleteUser
+    deleteUser,
+    getUserByEmail
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
 import { User, CreatedUser } from './user.types';
 import { signToken } from "../../auth/auth.service";
 import { sendMailWithSendgrid } from "../../config/sendGrid";
-import { welcomeEmail } from "../../utils/emails";
+import { welcomeEmail, recoverPasswordEmail } from "../../utils/emails";
 
 export const getAllUsersHandler = async (_: Request, res: Response) => {
     const users = await getAllUsers();
@@ -129,6 +130,54 @@ export const updatePasswordHandler = async (req: AuthRequest, res: Response) => 
 
     const updateUserPassword = await updatePassword(id, hashedPassword);
     res.status(201).json({ message: 'Password succesfully updated', updateUserPassword });
+}
+
+export const recoverPasswordHandler = async (req: Request, res: Response) => {
+    const { email } = req.body;
+
+    try {
+        const user = await getUserByEmail(email);
+
+        if (!user) {
+            return res.status(404).json({ message: 'The email is not registered in our database' });
+        }
+
+        // console.log('USER', user);
+
+        sendMailWithSendgrid(recoverPasswordEmail(user));
+
+        res.status(201).json({ message: 'Successful' });
+    } catch (error: any) { }
+}
+
+export const newPasswordHandler = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    console.log('PASSWORD', password);
+
+    const hashedPassword = await hashPassword(password);
+
+    const user = await getSingleUser(id);
+
+    if (!user) {
+        return res.status(401).json({ message: 'User ID does not match any user in the database' })
+    }
+
+    const userToUpdate = await getUserByEmail(user.email)
+
+    if (!userToUpdate) {
+        return res.status(401).json({ message: 'User ID does not match any user in the database' })
+    }
+
+    const data = {
+        ...userToUpdate,
+        password: hashedPassword,
+    }
+
+    const updatedUser = await updateUser(id, data);
+
+    res.status(201).json({ message: 'Password succesfully updated', updatedUser });
 }
 
 export const deleteUserHandler = async (req: AuthRequest, res: Response) => {

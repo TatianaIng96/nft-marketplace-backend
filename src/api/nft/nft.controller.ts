@@ -10,7 +10,8 @@ import {
   updateNFT,
   deleteNft,
   filterCategory,
-  filterCollection
+  filterCollection,
+  getNfUserId
 } from './nft.service';
 import { createNftOwner } from '../nftOwner/nftOwner.service';
 import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
@@ -21,19 +22,26 @@ import { getLast3Images } from '../nft-image/nft-image.service';
 import { createImageForNft } from '../imageForNft/imageForNft.service';
 
 export const getAllNftHandler = async (req: Request, res: Response) => {
- // const nfts = await getAllNft();
- const { likes, category, collection, price } = req.query;
- const categoryId = filterCategory(category ? category.toString() : undefined)
- const collectionId = filterCollection(collection ? collection.toString() : undefined)
- const priceInt = price ? parseInt(price.toString()): undefined;
- 
+  const { page: pageQuery, pageSize: pageSizeQuery, likes, category, collection, price } = req.query;
+
+  const page = parseInt(pageQuery as string) || 1;
+  const pageSize = parseInt(pageSizeQuery as string) || 5;
+  const categoryId = filterCategory(category ? category.toString() : undefined)
+  const collectionId = filterCollection(collection ? collection.toString() : undefined)
+  const priceInt = price ? parseInt(price.toString()) : undefined;
 
   if (!likes && !category && !collection && !price) {
-    const allNfts = await getAllNft();
-    return res.status(200).json(allNfts);
+    const { nfts, totalNfts } = await getAllNft(undefined, undefined, undefined, undefined, page, pageSize);
+    const totalPages = Math.ceil(totalNfts / pageSize)
+
+    if (page > totalPages) {
+      return res.status(400).json({ message: 'Page not found' });
+    };
+
+    return res.status(200).json(nfts);
   }
-  
-  const nfts = await getAllNft(likes ? likes.toString() : undefined, categoryId, collectionId, priceInt);
+
+  const { nfts } = await getAllNft(likes ? likes.toString() : undefined, categoryId, collectionId, priceInt, page, pageSize);
   return res.status(200).json(nfts);
 }
 
@@ -52,6 +60,22 @@ export const getNftHandler = async (req: Request, res: Response) => {
   }
 
   return res.json(nftWithOrganizedImages);
+}
+export const getNftUserHandler = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const nft = await getNfUserId(id)
+  if (!nft) {
+    return res.status(404).json({
+      message: 'nft not found',
+    });
+  }
+
+  // const nftWithOrganizedImages = {
+  //   ...nft,
+  //   imageForNft: nft.imageForNft.map((image) => image.nftImage.url)
+  // }
+
+  return res.json(nft);
 }
 
 export const createNftHandler = async (req: AuthRequest, res: Response) => {

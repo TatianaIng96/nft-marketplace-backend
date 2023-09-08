@@ -6,6 +6,10 @@ import routes from "./routes";
 const app = express();
 const port = process.env.PORT || 8080;
 
+app.use((req, _, next) => {
+    console.log(req.headers)
+})
+
 configExpress(app);
 
 // app.use((_, res, next) => {

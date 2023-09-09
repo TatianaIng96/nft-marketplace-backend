@@ -14,13 +14,17 @@ export const loginHandler = async (req: Request, res: Response) => {
         const user = await getUserByEmail(email);
 
         if (!user) {
-            return res.status(401).json('Invalid email');
+            return res.status(401).json({ message: 'Invalid email' });
+        }
+
+        if (user.isActive === false) {
+            return res.status(401).json({ message: 'User is inactivated' });
         }
 
         const match = await comparePassword(password, user.password);
 
         if (!match) {
-            return res.status(401).json('Invalid password');
+            return res.status(401).json({ message: 'Invalid password' });
         }
 
         const payload = {
@@ -40,7 +44,7 @@ export const loginHandler = async (req: Request, res: Response) => {
         return res.status(201).json({ token, profile });
 
     } catch (error) {
-        return res.status(401).send('There has been an error accessing information. Try again later!')
+        return res.status(401).json({ message: 'There has been an error accessing information. Try again later!' })
     }
 }
 

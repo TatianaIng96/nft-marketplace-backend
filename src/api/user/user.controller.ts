@@ -8,7 +8,8 @@ import {
     updatePassword,
     updateUser,
     deleteUser,
-    getUserByEmail
+    getUserByEmail,
+    getWholeUser
 } from "./user.service";
 import { AuthRequest } from "../../auth/auth.types";
 import { User, CreatedUser } from './user.types';
@@ -123,9 +124,6 @@ export const updatePasswordHandler = async (req: AuthRequest, res: Response) => 
         return "Old password do not match, incorrect password"
     }
 
-    console.log(match);
-
-
     const hashedPassword = await hashPassword(body.newPassword);
 
     const updateUserPassword = await updatePassword(id, hashedPassword);
@@ -142,8 +140,6 @@ export const recoverPasswordHandler = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'The email is not registered in our database' });
         }
 
-        // console.log('USER', user);
-
         sendMailWithSendgrid(recoverPasswordEmail(user));
 
         res.status(201).json({ message: 'Successful' });
@@ -153,8 +149,6 @@ export const recoverPasswordHandler = async (req: Request, res: Response) => {
 export const newPasswordHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
     const { password } = req.body;
-
-    console.log('PASSWORD', password);
 
     const hashedPassword = await hashPassword(password);
 
@@ -186,4 +180,23 @@ export const deleteUserHandler = async (req: AuthRequest, res: Response) => {
     const deletedUser = await deleteUser(id);
 
     return res.status(201).json({ message: 'User deleted successfully!', deletedUser });
+}
+
+export const deleteUserByAdminHandler = async (req: AuthRequest, res: Response) => {
+    const { id: userId } = req.params;
+
+    const userToInactivate = await getWholeUser(userId);
+
+    if (!userToInactivate) {
+        return res.status(500).json({ message: 'User not found in our database' });
+    }
+
+    const data = {
+        ...userToInactivate,
+        isActive: false,
+    }
+
+    await updateUser(userId, data as User);
+
+    return res.status(201).json({ message: 'User has been inactivated in the database' });
 }

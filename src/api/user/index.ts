@@ -11,7 +11,8 @@ import {
     updateUserByIdHandler,
     updatePasswordHandler,
     newPasswordHandler,
-    deleteUserHandler
+    deleteUserHandler,
+    deleteUserByAdminHandler
 } from "./user.controller";
 
 import { isAuthenticated, hasRole } from "../../auth/auth.controller";
@@ -29,5 +30,6 @@ router.put('/change-password', isAuthenticated, updatePasswordHandler);
 router.put('/:id', isAuthenticated, hasRole('ADMIN'), updateUserByIdHandler);
 router.put('/new-password/:id', newPasswordHandler);
 router.delete('/', isAuthenticated, hasRole('USER'), deleteUserHandler);
+router.delete('/:id', isAuthenticated, hasRole('ADMIN'), deleteUserByAdminHandler);
 
 export default router;

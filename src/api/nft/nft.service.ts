@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { getUnixTime, subMilliseconds } from 'date-fns';
 
 import { Nft } from "./nft.types";
 
@@ -141,10 +142,10 @@ export const getNfUserId = async (id: string) => {
             },
             auction: {
                 orderBy: {
-                    createdAt: 'desc' // Ordenar subastas por createdAt en orden descendente
+                    createdAt: 'desc' 
                 },
                 where: {
-                    nftId: id // Filtrar subastas por nftOwnerId igual a id del NFT
+                    nftId: id 
                 },
                 select: {
                     id: true,
@@ -177,6 +178,132 @@ export const getNfUserId = async (id: string) => {
         }
     })
     return nft
+}
+export const getNfUserIdAuction = async (id: string) => {
+    const currentDate = new Date(); // Fecha actual
+    const oneMillisecond = 1; // Un milisegundo para restar
+
+    const currentDateMinusOneMillisecond = subMilliseconds(currentDate, oneMillisecond);
+
+    const nft = await prisma.nft.findMany({
+        where: {
+            nftOwner: {
+                some: {
+                    userId: id,
+                    isCurrentOwner: true, 
+                },
+            },
+            auction: {
+                some: {
+                    finishDate: {
+                        gte: currentDateMinusOneMillisecond, 
+                    },
+                },
+            },
+        },
+        include: {
+            like: {
+                select: {
+                    id: true
+                }
+            },
+            auction: {
+                orderBy: {
+                    createdAt: 'desc' 
+                },
+                where: {
+                    finishDate: {
+                        gte: currentDateMinusOneMillisecond, 
+                    },
+                },
+                select: {
+                    id: true,
+                    finishDate: true,
+                    bid: true
+                },
+            },
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
+                }
+            },
+            nftOwner: {
+                where: {
+                    isCurrentOwner: true,
+                    userId: id,
+                },
+                select: {
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return nft;
+}
+export const getNfUserIdOwner = async (id: string) => {
+
+    const nft = await prisma.nft.findMany({
+        where: {
+            nftOwner: {
+                some: {
+                    userId: id,
+                    isCurrentOwner: true, 
+                },
+            }
+        },
+        include: {
+            like: {
+                select: {
+                    id: true
+                }
+            },
+            auction: {
+                orderBy: {
+                    createdAt: 'desc' 
+                },
+                select: {
+                    id: true,
+                    finishDate: true,
+                    bid: true
+                },
+            },
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
+                }
+            },
+            nftOwner: {
+                where: {
+                    isCurrentOwner: true,
+                    userId: id,
+                },
+                select: {
+                    user: {
+                        select: {
+                            id: true,
+                            firstName: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return nft;
 }
 
 export const createNft = async (input: Nft, id: string) => {

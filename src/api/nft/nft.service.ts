@@ -142,10 +142,10 @@ export const getNfUserId = async (id: string) => {
             },
             auction: {
                 orderBy: {
-                    createdAt: 'desc' 
+                    createdAt: 'desc'
                 },
                 where: {
-                    nftId: id 
+                    nftId: id
                 },
                 select: {
                     id: true,
@@ -190,13 +190,13 @@ export const getNfUserIdAuction = async (id: string) => {
             nftOwner: {
                 some: {
                     userId: id,
-                    isCurrentOwner: true, 
+                    isCurrentOwner: true,
                 },
             },
             auction: {
                 some: {
                     finishDate: {
-                        gte: currentDateMinusOneMillisecond, 
+                        gte: currentDateMinusOneMillisecond,
                     },
                 },
             },
@@ -209,11 +209,11 @@ export const getNfUserIdAuction = async (id: string) => {
             },
             auction: {
                 orderBy: {
-                    createdAt: 'desc' 
+                    createdAt: 'desc'
                 },
                 where: {
                     finishDate: {
-                        gte: currentDateMinusOneMillisecond, 
+                        gte: currentDateMinusOneMillisecond,
                     },
                 },
                 select: {
@@ -257,7 +257,7 @@ export const getNfUserIdOwner = async (id: string) => {
             nftOwner: {
                 some: {
                     userId: id,
-                    isCurrentOwner: true, 
+                    isCurrentOwner: true,
                 },
             }
         },
@@ -269,7 +269,7 @@ export const getNfUserIdOwner = async (id: string) => {
             },
             auction: {
                 orderBy: {
-                    createdAt: 'desc' 
+                    createdAt: 'desc'
                 },
                 select: {
                     id: true,
@@ -343,9 +343,9 @@ export const filterCategory = (category: string | undefined) => {
 
     const categories: { [key: string]: number } = {
         "art": 2,
-        "music": 4,
-        "video": 5,
-        "collectionable": 6,
+        "music": 3,
+        "video": 4,
+        "collectionable": 5,
     }
 
     let categoryId: number | undefined;
@@ -363,9 +363,9 @@ export const filterCategory = (category: string | undefined) => {
 export const filterCollection = (collection: string | undefined) => {
     const collections: { [key: string]: number } = {
         "art-decco": 2,
-        "bored-ape-yacht-club": 4,
-        "mutant-ape-yacht-club": 5,
-        "art-blocks-factory": 6
+        "bored-ape-yacht-club": 3,
+        "mutant-ape-yacht-club": 4,
+        "art-blocks-factory": 5
     }
 
     let collectionId: number | undefined;

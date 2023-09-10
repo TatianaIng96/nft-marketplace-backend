@@ -7,6 +7,12 @@ export const hashPassword = async (password: string) => {
   return await bcrypt.hash(password, salt);
 }
 
+export const hashPasswordSync = (password: string) => {
+  const factor: number = 12;
+  const salt = bcrypt.genSaltSync(factor);
+  return bcrypt.hashSync(password, salt);
+}
+
 export const comparePassword = async (
   password: string,
   hashedPassword: string

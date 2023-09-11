@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const nft_controller_1 = require("./nft.controller");
+const auth_controller_1 = require("../../auth/auth.controller");
+const router = (0, express_1.Router)();
+router.get('/', nft_controller_1.getAllNftHandler);
+router.get('/:id', nft_controller_1.getNftHandler);
+router.get('/user/:id', nft_controller_1.getNftUserHandler);
+router.get('/user/auction/:id', nft_controller_1.getNftUserAuctionHandler);
+router.get('/user/owner/:id', nft_controller_1.getNftUserOwnerHandler);
+router.post('/', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('USER'), nft_controller_1.createNftHandler);
+router.put('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('USER'), nft_controller_1.updateNftHandler);
+router.delete('/:id', auth_controller_1.isAuthenticated, (0, auth_controller_1.hasRole)('ADMIN'), nft_controller_1.deleteNftHandler);
+exports.default = router;

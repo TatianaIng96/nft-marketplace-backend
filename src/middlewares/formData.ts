@@ -9,32 +9,37 @@ cloudinary.config({
 });
 
 export const formData = (req: Request, _: Response, next: NextFunction) => {
-    let uploadingFile = false;
-    let countFiles = 0;
+    // let uploadingFile = false;
+    // let countFiles = 0;
 
     const bb = busboy({ headers: req.headers });
     req.body = {};
 
-    const done = () => {
-        if (uploadingFile) return;
-        if (countFiles > 0) return;
+    bb.on('field', (key, val) => {
+        req.body[key] = val;
+    });
 
-        next();
-    };
+    // const done = () => {
+    //     if (uploadingFile) return;
+    //     if (countFiles > 0) return;
+
+    //     next();
+    // };
 
     bb.on('file', (key, stream) => {
-        uploadingFile = true;
-        countFiles++;
+        // uploadingFile = true;
+        // countFiles++;
         const cloud = cloudinary.uploader.upload_stream(
             { upload_preset: 'nft-marketplace-preset' },
             (err, res) => {
                 if (err) throw new Error('Something went wrong uploading to Cloudinary');
 
                 req.body[key] = res?.secure_url;
-                uploadingFile = false;
-                countFiles--;
+                next();
+                // uploadingFile = false;
+                // countFiles--;
 
-                done();
+                // done();
             }
         );
 
@@ -49,7 +54,7 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
     });
 
     bb.on('finish', () => {
-        done();
+        // done();
     });
 
     req.pipe(bb);

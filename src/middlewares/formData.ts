@@ -30,7 +30,7 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
         uploadingFile = true;
         countFiles++;
         const cloud = cloudinary.uploader.upload_stream(
-            { upload_preset: 'nft-marketplace-preset' },
+            { upload_preset: 'nft-marketplace-test' },
             (err, res) => {
                 if (err) {
                     console.log('ERROR DE CLOUDINARY!', err)

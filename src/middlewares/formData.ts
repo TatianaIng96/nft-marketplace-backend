@@ -22,7 +22,7 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
     const done = () => {
         if (uploadingFile) return;
         if (countFiles > 0) return;
-        console.log('FORMDATA MIDDLEWARE IS FINISHED')
+
         next();
     };
 
@@ -32,12 +32,10 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
         const cloud = cloudinary.uploader.upload_stream(
             { upload_preset: 'nft-marketplace-test' },
             (err, res) => {
-                if (err) {
-                    console.log('ERROR DE CLOUDINARY!', err)
-                }; // throw new Error('Something went wrong uploading to Cloudinary');
+                if (err) throw new Error('Something went wrong uploading to Cloudinary');
 
                 req.body[key] = res?.secure_url;
-                // next();
+
                 uploadingFile = false;
                 countFiles--;
 
@@ -46,7 +44,6 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
         );
 
         stream.on('data', (data) => {
-            console.log('DATA IN FORMDATA MIDDLEWARE:', data);
             cloud.write(data);
         });
 

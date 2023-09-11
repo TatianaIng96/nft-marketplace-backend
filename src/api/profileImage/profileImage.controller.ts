@@ -17,12 +17,11 @@ export const getProfileImageHandler = async (req: Request, res: Response) => {
     const profileImage = await getProfileImage(id);
     res.status(200).json(profileImage);
   } catch (error) {
-    res.status(400).json({ error: "Image coudn't be obtained" });
+    res.status(400).json({ error: "Image couldn't be obtained" });
   };
 };
 
 export const createProfileImageHandler = async (req: AuthRequest, res: Response) => {
-  console.log('REQUEST BODY:', req.body);
   const { url } = req.body;
   const { id } = req.user as User;
 

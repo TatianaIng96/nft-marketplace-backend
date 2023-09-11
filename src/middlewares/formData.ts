@@ -32,7 +32,7 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
         const cloud = cloudinary.uploader.upload_stream(
             { upload_preset: 'nft-marketplace-preset' },
             (err, res) => {
-                if (err) throw err // new Error('Something went wrong uploading to Cloudinary');
+                if (err) console.log(err); // throw new Error('Something went wrong uploading to Cloudinary');
 
                 req.body[key] = res?.secure_url;
                 next();

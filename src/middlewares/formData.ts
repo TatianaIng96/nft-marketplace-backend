@@ -44,6 +44,7 @@ export const formData = (req: Request, _: Response, next: NextFunction) => {
         );
 
         stream.on('data', (data) => {
+            console.log('DATA IN FORMDATA MIDDLEWARE:', data);
             cloud.write(data);
         });
 

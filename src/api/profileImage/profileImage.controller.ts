@@ -22,6 +22,7 @@ export const getProfileImageHandler = async (req: Request, res: Response) => {
 };
 
 export const createProfileImageHandler = async (req: AuthRequest, res: Response) => {
+  console.log('REQUEST BODY:', req.body);
   const { url } = req.body;
   const { id } = req.user as User;
 
@@ -29,7 +30,7 @@ export const createProfileImageHandler = async (req: AuthRequest, res: Response)
     const createImage = await createProfileImage(url, id);
     res.status(201).json(createImage);
   } catch (error) {
-    res.status(401).json({ error: "Image coudn't be created" });
+    res.status(401).json({ error: "Image couldn't be created" });
   };
 };
 

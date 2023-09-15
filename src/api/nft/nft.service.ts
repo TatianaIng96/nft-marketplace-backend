@@ -6,6 +6,24 @@ import { Nft } from "./nft.types";
 const prisma = new PrismaClient()
 const now = new Date(); // Obtiene la fecha y hora actual
 
+export const getCompleteNfts = async () => {
+    const completeNfts = await prisma.nft.findMany({
+        include: {
+            imageForNft: {
+                select: {
+                    nftImage: {
+                        select: {
+                            url: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return completeNfts;
+}
+
 export const getAllNft = async (likes?: string, categoryId?: number, collectionId?: number, price?: number, page: number = 1, pageSize: number = 3) => {
     const skip = (page - 1) * pageSize;
     const nftFilters: any = {

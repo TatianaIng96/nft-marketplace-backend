@@ -4,6 +4,7 @@ import { AuthRequest } from '../../auth/auth.types';
 import { User } from '../user/user.types';
 
 import {
+  getCompleteNfts,
   getAllNft,
   getNftById,
   createNft,
@@ -22,6 +23,19 @@ import { getCollectionByName } from '../collection/collection.service';
 import { Nft } from './nft.types';
 import { getLast3Images } from '../nft-image/nft-image.service';
 import { createImageForNft } from '../imageForNft/imageForNft.service';
+
+export const getNftsForSearchHandler = async (req: Request, res: Response) => {
+  const completeNfts = await getCompleteNfts();
+
+  const organizedNfts = completeNfts.map((nft) => {
+    return {
+      ...nft,
+      imageForNft: nft.imageForNft.map((item) => item.nftImage.url)
+    }
+  });
+
+  res.status(200).json(organizedNfts);
+}
 
 export const getAllNftHandler = async (req: Request, res: Response) => {
   const { page: pageQuery, pageSize: pageSizeQuery, likes, category, collection, price } = req.query;
@@ -71,7 +85,7 @@ export const getNftUserHandler = async (req: Request, res: Response) => {
       message: 'nft not found',
     });
   }
-  
+
   return res.json(nft);
 }
 export const getNftUserAuctionHandler = async (req: Request, res: Response) => {

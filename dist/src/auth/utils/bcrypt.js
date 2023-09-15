@@ -28,8 +28,6 @@ const hashPasswordSync = (password) => {
 };
 exports.hashPasswordSync = hashPasswordSync;
 const comparePassword = (password, hashedPassword) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('TYPED PASSWORD:', password);
-    console.log('SAVED PASSWORD:', hashedPassword);
     return yield bcrypt_1.default.compare(password, hashedPassword);
 });
 exports.comparePassword = comparePassword;

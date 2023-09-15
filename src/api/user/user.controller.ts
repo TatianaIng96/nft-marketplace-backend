@@ -45,7 +45,7 @@ export const getUserByIdHandler = async (req: AuthRequest, res: Response) => {
 
 export const createUserHandler = async (req: Request, res: Response) => {
     const body = req.body as User;
-    const hashedPassword = await hashPassword(body.password);
+    const hashedPassword = await hashPassword(body.password as string);
 
     const data = {
         ...body,
@@ -118,7 +118,7 @@ export const updatePasswordHandler = async (req: AuthRequest, res: Response) => 
         return "Not find user"
     }
 
-    const match = await comparePassword(body.oldPassword, loggedUser.password)
+    const match = await comparePassword(body.oldPassword, loggedUser.password as string)
 
     if (!match) {
         return "Old password do not match, incorrect password"

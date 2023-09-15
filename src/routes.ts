@@ -4,17 +4,18 @@ import healthcheckRouter from "./api/healthcheck";
 import nftRouter from "./api/nft";
 import usersRouter from "./api/user";
 import transactionsRouter from "./api/transaction";
-import authLocalRouter from './auth/local';
-import likeRouter from './api/like';
-import auctionsRouter from './api/auction';
-import categoriesRouter from './api/category';
+import authLocalRouter from "./auth/local";
+import likeRouter from "./api/like";
+import auctionsRouter from "./api/auction";
+import categoriesRouter from "./api/category";
 import nftOwnerRouter from "./api/nftOwner";
 import collectionRouter from "./api/collection";
-import bidRouter from './api/bid';
-import nftImageRouter from './api/nft-image';
-import profileImageRouter from './api/profileImage';
+import bidRouter from "./api/bid";
+import nftImageRouter from "./api/nft-image";
+import profileImageRouter from "./api/profileImage";
+import authGoogleRouter from "./auth/google"
 
-import coverImageRouter from './api/coverImage';
+import coverImageRouter from "./api/coverImage";
 
 const routes = (app: Application) => {
     app.use('/api/healthcheck', healthcheckRouter);
@@ -30,6 +31,7 @@ const routes = (app: Application) => {
     app.use('/api/auctions', auctionsRouter);
     app.use('/api/bid', bidRouter);
     app.use('/auth/local', authLocalRouter);
+    app.use('/auth/google', authGoogleRouter);
     app.use('/api/nft-image', nftImageRouter);
     app.use('/api/profile-image', profileImageRouter);
 }

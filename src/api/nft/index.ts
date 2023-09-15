@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+    getNftsForSearchHandler,
     getAllNftHandler,
     getNftHandler,
     createNftHandler,
@@ -14,6 +15,7 @@ import { isAuthenticated, hasRole } from "../../auth/auth.controller";
 
 const router = Router()
 
+router.get('/all', getNftsForSearchHandler)
 router.get('/', getAllNftHandler)
 router.get('/:id', getNftHandler)
 router.get('/user/:id', getNftUserHandler)

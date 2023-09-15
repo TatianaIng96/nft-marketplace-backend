@@ -1,6 +1,6 @@
 import { Transaction } from './transaction.types';
-import{NftOwner} from '../nftOwner/nftOwner.types'
-import { NftOwnerRelation  } from '../nftOwner/nftOwner.types';
+import { NftOwner } from '../nftOwner/nftOwner.types'
+import { NftOwnerRelation } from '../nftOwner/nftOwner.types';
 import { Request, Response } from "express";
 import { updateNftOwner, createNftOwner } from '../nftOwner/nftOwner.service';
 import { transactionEmail } from '../../utils/emails';
@@ -32,8 +32,8 @@ export const getTransactionByIdHandler = async (req: Request, res: Response) => 
 }
 
 export const createTransactionHandler = async (req: Request, res: Response) => {
-  const { paymentMethod, amount, nftId, nftOwnerId, buyerId} = req.body
-  
+  const { paymentMethod, amount, nftId, nftOwnerId, buyerId } = req.body
+
   try {
     const { id } = paymentMethod
     const payment = await stripe.paymentIntents.create({
@@ -58,19 +58,17 @@ export const createTransactionHandler = async (req: Request, res: Response) => {
     const newOwner = {
       nftId,
       userId: buyerId,
-    } as NftOwnerRelation 
+    } as NftOwnerRelation
     const newTransaction = await createTransaction(data)
-    const updateOwner = updateNftOwner(nftOwnerId, data_owner);
-    const newNftOwner = await createNftOwner(newOwner);
-
+    await updateNftOwner(nftOwnerId, data_owner);
+    await createNftOwner(newOwner);
 
     sendMailWithSendgrid(await transactionEmail(newTransaction));
-    
 
     res.status(201).json({ message: 'Payment successful', payment })
   } catch (error: any) {
     console.log(error);
-    
-    res.status(500).json({ message: error.message})
+
+    res.status(500).json({ message: error.message })
   }
 }

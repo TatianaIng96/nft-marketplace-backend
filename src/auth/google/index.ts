@@ -1,9 +1,10 @@
 import { Router } from "express";
 
-import { handleGoogleLogin } from "./google.controller";
+import { handleGoogleRegister, handleGoogleLogin } from "./google.controller";
 
 const router = Router()
 
-router.post('/', handleGoogleLogin);
+router.post('/', handleGoogleRegister);
+router.post('/login', handleGoogleLogin);
 
 export default router;

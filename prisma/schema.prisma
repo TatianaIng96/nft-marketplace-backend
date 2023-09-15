@@ -53,7 +53,7 @@ model User {
   firstName     String
   lastName      String
   email         String         @unique
-  password      String
+  password      String?
   bio           String?
   role          Role           @default(USER)
   gender        String?

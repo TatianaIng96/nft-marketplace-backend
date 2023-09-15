@@ -21,7 +21,7 @@ export const loginHandler = async (req: Request, res: Response) => {
             return res.status(401).json({ message: 'User is inactivated' });
         }
 
-        const match = await comparePassword(password, user.password);
+        const match = await comparePassword(password, user.password as string);
 
         if (!match) {
             return res.status(401).json({ message: 'Invalid password' });
@@ -40,6 +40,8 @@ export const loginHandler = async (req: Request, res: Response) => {
             email: user.email,
             role: user.role
         }
+
+        console.log(profile);
 
         return res.status(201).json({ token, profile });
 

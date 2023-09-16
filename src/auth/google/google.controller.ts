@@ -39,7 +39,6 @@ export const handleGoogleRegister = async (req: Request, res: Response) => {
 
     res.status(201).json({ token, profile });
   } catch (error) {
-    console.log("This is the error", error);
 
     if (error instanceof Error) {
       res.status(500).json({ message: "There is an error creating user", error: error.message });
@@ -84,7 +83,6 @@ export const handleGoogleLogin = async (req: Request, res: Response) => {
 
     res.status(201).json({ token, profile });
   } catch (error) {
-    console.log("This is the error", error);
 
     if (error instanceof Error) {
       res.status(500).json({ message: "There is an error creating user", error: error.message });

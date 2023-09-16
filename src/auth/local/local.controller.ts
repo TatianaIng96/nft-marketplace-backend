@@ -41,8 +41,6 @@ export const loginHandler = async (req: Request, res: Response) => {
             role: user.role
         }
 
-        console.log(profile);
-
         return res.status(201).json({ token, profile });
 
     } catch (error) {

@@ -67,8 +67,6 @@ export const createTransactionHandler = async (req: Request, res: Response) => {
 
     res.status(201).json({ message: 'Payment successful', payment })
   } catch (error: any) {
-    console.log(error);
-
     res.status(500).json({ message: error.message })
   }
 }

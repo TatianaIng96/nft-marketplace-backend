@@ -24,14 +24,14 @@ Codebase for the node.js projects.
 
 ## Express Router and Routes
 
-| Route            | HTTP Verb | Description                             |
-| -----------------| --------- | --------------------------------------- |
-| /api/healthcheck | GET       | Shows a message ('OK') and server uptime|
-| /api/users       | GET       | Get list of users                       |
-| /api/users       | POST      | Creates a new user                      |
-| /api/users/:id   | GET       | Gets a single user                      |
-| /api/users/:id   | PUT       | Updates a user                          |
-| /api/users/:id   | DELETE    | Deletes a user (inactivates)            |
+| Route            | HTTP Verb | Route middleware         | Description                             |
+| -----------------| --------- | -------------------------|-----------------------------------------|
+| /api/healthcheck | GET       |                          | Shows a message ('OK') and server uptime|
+| /api/users       | GET       | isAuthenticated          | Get list of users                       |
+| /api/users       | POST      |                          | Creates a new user                      |
+| /api/users/:id   | GET       | isAuthenticated          | Gets a single user                      |
+| /api/users/:id   | PUT       | isAuthenticated, hasRole | Updates a user                          |
+| /api/users/:id   | DELETE    | isAuthenticated, hasRole | Deletes a user (inactivates)            |
 
 
 ## Usage
